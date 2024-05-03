@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 16377
+  controlID: 17474
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 16378
+  controlID: 17475
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 16379
+  controlID: 17476
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -240,7 +240,7 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 1044ffff
       m_LastClickedID: 0
       m_ExpandedIDs: 5ccafeffeacafeffeaccfeff5ad0feffe8d0feffe2d4feffa6e9feff34eafeff2aeefefffaf9feff4a0dffff908cffffbe8cffffc08cffff8c9effffe4a4ffff88f7ffff2efbffff36a90000
       m_RenameOverlay:
@@ -285,8 +285,8 @@ MonoBehaviour:
     y: 0
     width: 795.2001
     height: 428.8
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 2}
   m_Panes:
   - {fileID: 8}
@@ -4024,8 +4024,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
+    m_SelectedInstanceIDs: 1044ffff
+    m_LastClickedInstanceID: -48112
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000387600009e00010036b80000d6c000004e800000a68700003a8500009e7101008a7d000094b600001cd3000046d00000c2ea000000000000585c0100e88300001ed3000076ea000064561000
     m_RenameOverlay:
@@ -4181,8 +4181,8 @@ MonoBehaviour:
     y: 0
     width: 427.19995
     height: 730.8
-  m_MinSize: {x: 275, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 19}
