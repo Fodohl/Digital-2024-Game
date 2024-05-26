@@ -1,7 +1,6 @@
-﻿using Alteruna;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class FirstPersonLook : CommunicationBridge
+public class FirstPersonLook : MonoBehaviour
 {
     public float sensitivity = 2;
     public float smoothing = 1.5f;

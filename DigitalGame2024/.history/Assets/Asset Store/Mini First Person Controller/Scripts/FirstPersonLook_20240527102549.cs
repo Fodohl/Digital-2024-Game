@@ -1,13 +1,21 @@
-﻿using Alteruna;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class FirstPersonLook : CommunicationBridge
+public class FirstPersonLook : MonoBehaviour
 {
+    [SerializeField]
+    Transform character;
     public float sensitivity = 2;
     public float smoothing = 1.5f;
 
     Vector2 velocity;
     Vector2 frameVelocity;
+
+
+    void Reset()
+    {
+        // Get the character from the FirstPersonMovement in parents.
+        character = GetComponentInParent<FirstPersonMovement>().transform;
+    }
 
     void Start()
     {
@@ -28,6 +36,6 @@ public class FirstPersonLook : CommunicationBridge
 
         // Rotate camera up-down and controller left-right from velocity.
         transform.localRotation = Quaternion.AngleAxis(-velocity.y, Vector3.right);
-        transform.parent.localRotation = Quaternion.AngleAxis(velocity.x, Vector3.up);
+        character.localRotation = Quaternion.AngleAxis(velocity.x, Vector3.up);
     }
 }

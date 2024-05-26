@@ -1,22 +1,22 @@
- // Some stupid rigidbody based movement by Dani
+// Some stupid rigidbody based movement by Dani
 
 using System;
 using UnityEngine;
 using Alteruna;
 
-public class PlayerMovement : CommunicationBridge {
+public class RBMovement : MonoBehaviour {
 
     //Assingables
-    private Alteruna.Avatar avatar;
     public Transform playerCam;
     public Transform orientation;
     
     //Other
-    public RigidbodySynchronizable rb;
+    private RigidbodySynchronizable rb;
+    private Alteruna.Avatar avatar;
 
     //Rotation and look
     private float xRotation;
-    public float sensitivity = 50f;
+    private float sensitivity = 50f;
     private float sensMultiplier = 1f;
     
     //Movement
@@ -30,7 +30,7 @@ public class PlayerMovement : CommunicationBridge {
     public float maxSlopeAngle = 35f;
 
     //Crouch & Slide
-    private Vector3 crouchScale = new Vector3(1, 0.7f, 1);
+    private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
     private Vector3 playerScale;
     public float slideForce = 400;
     public float slideCounterMovement = 0.2f;
@@ -49,11 +49,8 @@ public class PlayerMovement : CommunicationBridge {
     private Vector3 wallNormalVector;
 
     void Awake() {
-        avatar = transform.GetComponent<Alteruna.Avatar>();
-        if (!avatar.IsMe){
-            playerCam.GetComponentInChildren<AudioListener>().enabled = false;
-        }
-        rb = transform.GetComponent<RigidbodySynchronizable>();
+        rb = GetComponent<RigidbodySynchronizable>();
+        avatar = GetComponent<Alteruna.Avatar>();
     }
     
     void Start() {
@@ -64,16 +61,14 @@ public class PlayerMovement : CommunicationBridge {
 
     
     private void FixedUpdate() {
-        if (avatar.IsMe) {
+        if (avatar.IsMe)
             Movement();
-        }
     }
 
     private void Update() {
-        if (avatar.IsMe) {
-            MyInput();
+        MyInput();
+        if (avatar.IsMe)
             Look();
-        }
     }
 
     /// <summary>
@@ -94,7 +89,7 @@ public class PlayerMovement : CommunicationBridge {
 
     private void StartCrouch() {
         transform.localScale = crouchScale;
-        transform.position = new Vector3(transform.position.x, transform.position.y - 0.3f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
         if (rb.velocity.magnitude > 0.5f) {
             if (grounded) {
                 rb.AddForce(orientation.transform.forward * slideForce);
@@ -104,7 +99,7 @@ public class PlayerMovement : CommunicationBridge {
 
     private void StopCrouch() {
         transform.localScale = playerScale;
-        transform.position = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
     }
 
     private void Movement() {
@@ -178,26 +173,20 @@ public class PlayerMovement : CommunicationBridge {
     
     private float desiredX;
     private void Look() {
-        float mouseX;
-        float mouseY;
-        if (Time.timeScale == 1f){
-            mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.fixedDeltaTime * sensMultiplier;
-            mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.fixedDeltaTime * sensMultiplier;
-        }else{
-            mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.fixedDeltaTime * sensMultiplier/2;
-            mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.fixedDeltaTime * sensMultiplier/2;
-        }
+        float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.fixedDeltaTime * sensMultiplier;
+        float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.fixedDeltaTime * sensMultiplier;
 
         //Find current look rotation
         Vector3 rot = playerCam.transform.localRotation.eulerAngles;
-        desiredX = rot.y;
+        desiredX = rot.y + mouseX;
         
         //Rotate, and also make sure we dont over- or under-rotate.
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -89f, 89f);
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
         //Perform the rotations
         playerCam.transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0);
-        transform.localRotation = Quaternion.Euler(0, desiredX, 0);
+        orientation.transform.localRotation = Quaternion.Euler(0, desiredX, 0);
     }
 
     private void CounterMovement(float x, float y, Vector2 mag) {
