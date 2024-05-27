@@ -35,6 +35,6 @@ public class FirstPersonMovement : MonoBehaviour
         Vector2 targetVelocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
         targetVelocity *= targetMovingSpeed;
 
-        rb.velocity = transform.rotation * new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.y);
+        rb.AddForce(transform.rotation * new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.y));
     }
 }
