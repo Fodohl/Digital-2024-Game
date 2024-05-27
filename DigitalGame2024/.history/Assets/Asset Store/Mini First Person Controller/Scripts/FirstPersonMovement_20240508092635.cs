@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Alteruna;
 using UnityEngine;
 
@@ -28,6 +28,8 @@ public class FirstPersonMovement : CommunicationBridge
 
     void FixedUpdate()
     {
+        if (!avatar.IsMe)
+            return;
         IsRunning = canRun && Input.GetKey(KeyCode.LeftShift);
 
         float targetMovingSpeed = IsRunning ? runSpeed : speed;
@@ -36,11 +38,9 @@ public class FirstPersonMovement : CommunicationBridge
             targetMovingSpeed = speedOverrides[speedOverrides.Count - 1]();
         }
 
-        Vector2 targetVelocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+        Vector2 targetVelocity =new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
         targetVelocity *= targetMovingSpeed;
 
-        if (!avatar.IsMe)
-            return;
-        rb.AddForce(transform.rotation * new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.y));
+        rb.velocity = transform.rotation * new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.y);
     }
 }

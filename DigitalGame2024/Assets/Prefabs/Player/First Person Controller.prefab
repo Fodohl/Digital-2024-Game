@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 4336934478164498184}
   - component: {fileID: 3051134943377482354}
   - component: {fileID: 9092872889052306606}
-  - component: {fileID: -5323553634257391270}
+  - component: {fileID: 1569931506528517090}
+  - component: {fileID: -2179566910508899001}
   m_Layer: 0
   m_Name: First Person Controller
   m_TagString: Untagged
@@ -90,8 +91,8 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 80
+  m_Interpolate: 1
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &3684541197895297947
 MonoBehaviour:
@@ -166,7 +167,7 @@ MonoBehaviour:
   OnUnpossessed:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &-5323553634257391270
+--- !u!114 &1569931506528517090
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,7 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
-  _uidString: 5ef48d1e-a063-44a1-a847-bcc934c30b12
+  _uidString: 14f35e09-60cf-495d-a2ab-7a2390322c90
   BucketBehaviors:
   - Name: Min
     NetLOD: 0
@@ -202,6 +203,39 @@ MonoBehaviour:
   ApplyAsTransform: 0
   AllowCollisionToAssumeOwner: 1
   Rigidbody: {fileID: 8470334783403334584}
+--- !u!114 &-2179566910508899001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099865938462262715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1312809854, guid: 0ae8d181602a00248a82f64a684a1c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 0}
+  _uidString: c21399de-abd1-4dc2-9403-66dd2af5edbf
+  BucketBehaviors:
+  - Name: Min
+    NetLOD: 0
+    Frequency: -1
+  - Name: Low
+    NetLOD: 1
+    Frequency: 0
+  - Name: Mid
+    NetLOD: 2
+    Frequency: 0
+  - Name: High
+    NetLOD: 3
+    Frequency: 0
+  - Name: Max
+    NetLOD: 4
+    Frequency: 120
+  UseGlobalPosition: 0
+  refreshRate: 30
+  SyncedAxes: 511
 --- !u!1 &3187332502690751759
 GameObject:
   m_ObjectHideFlags: 0

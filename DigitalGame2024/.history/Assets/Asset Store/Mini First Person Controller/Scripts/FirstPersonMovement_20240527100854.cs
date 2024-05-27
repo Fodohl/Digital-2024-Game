@@ -36,7 +36,7 @@ public class FirstPersonMovement : CommunicationBridge
             targetMovingSpeed = speedOverrides[speedOverrides.Count - 1]();
         }
 
-        Vector2 targetVelocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+        Vector2 targetVelocity =new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
         targetVelocity *= targetMovingSpeed;
 
         if (!avatar.IsMe)
