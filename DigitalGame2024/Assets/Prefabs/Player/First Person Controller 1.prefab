@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 1569931506528517090}
   - component: {fileID: 2367064016736731548}
   - component: {fileID: 6859686239493551723}
+  - component: {fileID: -2084092409833315471}
   m_Layer: 0
   m_Name: First Person Controller 1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -206,6 +207,23 @@ MonoBehaviour:
   UseGlobalPosition: 0
   refreshRate: 120
   SyncedAxes: 511
+--- !u!114 &-2084092409833315471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099865938462262715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b220fba51724714d9996bb76f5a2e5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 0}
+  _uidString: 2dd44f5d-972f-4085-b284-a02028f07a75
+  Reliability: 1
+  LocalMethodBehavior: 1
+  currentHealth: 100
 --- !u!1 &3645798547050110866
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,8 +284,8 @@ GameObject:
   - component: {fileID: 1344048727581247828}
   - component: {fileID: 1184615392343937433}
   - component: {fileID: 7078184434955827015}
-  - component: {fileID: 8075773636570410199}
   - component: {fileID: 8033906651222599523}
+  - component: {fileID: 14461046620355379}
   m_Layer: 0
   m_Name: First Person Camera
   m_TagString: MainCamera
@@ -369,25 +387,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec72980442fddac4d86e75ab24b4d027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Multiplayer: {fileID: 0}
   sensitivity: 2
   smoothing: 1.5
---- !u!114 &8075773636570410199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6600151033503634098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 780f90e951d635f439326ea715cd97e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultFOV: 90
-  maxZoomFOV: 15
-  currentZoom: 0
-  sensitivity: 1
 --- !u!114 &8033906651222599523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,6 +433,18 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &14461046620355379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6600151033503634098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d75f0bcfe90552f418ec2d65448f6268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8802704415483456139
 GameObject:
   m_ObjectHideFlags: 0
