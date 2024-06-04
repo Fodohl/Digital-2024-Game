@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Alteruna;
 
 public class FirstPersonLook : MonoBehaviour
 {
@@ -8,18 +7,15 @@ public class FirstPersonLook : MonoBehaviour
 
     Vector2 velocity;
     Vector2 frameVelocity;
-    private Alteruna.Avatar avatar;
 
     void Start()
     {
         // Lock the mouse cursor to the game screen.
         Cursor.lockState = CursorLockMode.Locked;
-        avatar = transform.parent.GetComponent<Alteruna.Avatar>();
     }
 
     void Update()
     {
-        if (!avatar.IsMe){return;}
         // Get smooth velocity.
         Vector2 mouseDelta = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         Vector2 rawFrameVelocity = Vector2.Scale(mouseDelta, Vector2.one * sensitivity);

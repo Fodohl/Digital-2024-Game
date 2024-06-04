@@ -341,6 +341,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3374160450994039818}
+  - component: {fileID: 3600594667540396048}
   m_Layer: 0
   m_Name: Wooden_House 4
   m_TagString: Untagged
@@ -374,6 +375,28 @@ Transform:
   - {fileID: 4962587240282333557}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &3600594667540396048
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2580788961414847930}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2864843993426058694, guid: 19ce7ae364ae0564fbb2938ea82887f2, type: 3}
 --- !u!1 &2956556021496847781
 GameObject:
   m_ObjectHideFlags: 0
