@@ -8,7 +8,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 49f3c1a9f4d7aef46b02ea2bd99adb65
-  - enabled: 0
-    path: Assets/Scenes/luie test.unity
-    guid: 65f7c382350054b849bf0f89dadfc564
   m_configObjects: {}

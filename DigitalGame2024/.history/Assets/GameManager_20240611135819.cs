@@ -26,6 +26,11 @@ public class GameManager : AttributesSync
     private Health health;
     public TextMeshProUGUI healthText;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void Update()
     {
         if (inRoom)
