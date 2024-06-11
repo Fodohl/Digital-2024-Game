@@ -57,7 +57,7 @@ public class GameManager : AttributesSync
     public void OnRoomJoined(Multiplayer multiplayerInstance, Room room, User user)
     {
         inRoom = true;
-        Multiplayer.SpawnAvatar(new Vector3(0, 10, 0));
+        Multiplayer.SpawnAvatar(spawnLocationTeamA[0].transform);
         // if (ATeamUsers. > BTeamUsers) {
 
         // }
