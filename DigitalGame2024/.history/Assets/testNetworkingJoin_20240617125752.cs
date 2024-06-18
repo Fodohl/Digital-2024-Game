@@ -5,10 +5,9 @@ using System.Collections.Generic;
 
 public class testNetworkingJoin : CommunicationBridge
 {
-    List<Room> room = new List<Room>();
-    private float timer = 0;
+        List<Room> room = new List<Room>();
     public void Join(){
-        print(room[0].Name);
+        print(room);
         Multiplayer.JoinRoom(room[0]);
         Multiplayer.LoadScene("Game");
     }
@@ -17,13 +16,8 @@ public class testNetworkingJoin : CommunicationBridge
         Multiplayer.LoadScene("Game");
     }
     private void Update() {
-        timer += Time.deltaTime;
-        print(timer);
-        if (timer > 2){
-            if(Multiplayer.IsConnected){
-                room = Multiplayer.AvailableRooms;
-            }
-            timer = 0;
+        if(Multiplayer.IsConnected){
+            room = Multiplayer.AvailableRooms;
         }
     }
 }

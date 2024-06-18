@@ -8,7 +8,7 @@ public class testNetworkingJoin : CommunicationBridge
     List<Room> room = new List<Room>();
     private float timer = 0;
     public void Join(){
-        print(room[0].Name);
+        print(room);
         Multiplayer.JoinRoom(room[0]);
         Multiplayer.LoadScene("Game");
     }

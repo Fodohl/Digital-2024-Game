@@ -25,9 +25,9 @@ public class GameManager : AttributesSync
     private String player;
     private Health health;
     public TextMeshProUGUI healthText;
-    // private void Awake(){
-    //     DontDestroyOnLoad(gameObject);
-    // }
+    private void Awake(){
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Update()
     {

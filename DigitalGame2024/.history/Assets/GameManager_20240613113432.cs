@@ -25,9 +25,9 @@ public class GameManager : AttributesSync
     private String player;
     private Health health;
     public TextMeshProUGUI healthText;
-    // private void Awake(){
-    //     DontDestroyOnLoad(gameObject);
-    // }
+    private void Awake(){
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Update()
     {
@@ -35,7 +35,8 @@ public class GameManager : AttributesSync
         {
             if (Multiplayer.InRoom)
             {
-                if (healthText == null){
+                if (health == null){
+                    health = FindObjectOfType<references>().GetComponent<references>().health;
                     healthText = FindObjectOfType<references>().GetComponent<references>().healthText;
                 }
                 if (health == null)
