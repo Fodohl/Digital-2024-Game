@@ -58,8 +58,10 @@ public class PlayerMovement : CommunicationBridge {
     
     void Start() {
         playerScale =  transform.localScale;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if (!avatar.IsMe){
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
     

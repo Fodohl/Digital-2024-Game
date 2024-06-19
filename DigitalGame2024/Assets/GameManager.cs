@@ -7,67 +7,57 @@ using System.Collections.Generic;
 
 public class GameManager : AttributesSync
 {
-    [SerializeField]
-    private GameObject[] spawnLocationTeamA;
+    public enum GameState{
+        StartMenu,
+        Playing,
+        Paused,
+        ScoreBoard
+    }
+    [HideInInspector] public GameState gameState = GameState.StartMenu;
 
-    [SerializeField]
-    private GameObject[] spawnLocationTeamB;
-
-    // [SynchronizableField]
-    // private List<User> ATeamUsers = new List<User>();
-
-    // [SynchronizableField]
-    // private List<User> BTeamUsers = new List<User>();
-
-    private bool inRoom = false;
-
-    // [SynchronizableField]
-    // private String player;
-    private Health health;
-    public TextMeshProUGUI healthText;
-    // private void Awake(){
-    //     DontDestroyOnLoad(gameObject);
-    // }
-
-    private void Update()
+    private static GameManager _instance;
+    public static GameManager Instance
     {
-        if (inRoom)
+        get
         {
-            if (Multiplayer.InRoom)
+            if (_instance == null)
             {
-                if (healthText == null){
-                    healthText = FindObjectOfType<references>().GetComponent<references>().healthText;
-                }
-                if (health == null)
+                _instance = FindObjectOfType<GameManager>();
+                if (_instance == null)
                 {
-                    var healthScripts = FindObjectsOfType<Health>();
-                    foreach (var healthScript in healthScripts)
-                    {
-                        if (healthScript.gameObject.GetComponent<Alteruna.Avatar>().IsMe)
-                        {
-                            health = healthScript;
-                        }
-                    }
-                }
-                else
-                {
-                    healthText.text = "Health: " + health.currentHealth;
+                    GameObject singletonObject = new GameObject("GameManager");
+                    _instance = singletonObject.AddComponent<GameManager>();
                 }
             }
+            return _instance;
+        }
+    }
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
         }
     }
 
-    public void OnRoomJoined(Multiplayer multiplayerInstance, Room room, User user)
-    {
-        inRoom = true;
+    public void SpawnAvatar(){
         Multiplayer.SpawnAvatar(new Vector3(0, 10, 0));
-        // if (ATeamUsers. > BTeamUsers) {
-
-        // }
+        gameState = GameState.Playing;
+        GameUIManager.Instance.UpdateUI();
     }
 
-    public void LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
+    public void DestroyAvatar(string avatarName){
+        BroadcastRemoteMethod("DestroyAvatarBroadcast", avatarName);
+    }
+
+    [SynchronizableMethod] public void DestroyAvatarBroadcast(string avatarName){
+        if (GameObject.Find(avatarName).GetComponent<Alteruna.Avatar>().IsMe){
+            gameState = GameState.StartMenu;
+        }
+        Destroy(GameObject.Find(avatarName));
     }
 }

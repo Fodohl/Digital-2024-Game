@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Health : AttributesSync {
     private const float startingHealth = 100f;
-    [SynchronizableField]public float currentHealth;
+    [SynchronizableField] public float currentHealth;
     
     private void Awake(){
         currentHealth = startingHealth;
@@ -16,24 +16,19 @@ public class Health : AttributesSync {
         }
     }
     public void TakeHealth(float amount){
-        BroadcastRemoteMethod("TakeHealthBroadcast", amount);
+        currentHealth -= amount;
+        BroadcastRemoteMethod("UpdateUIBroadcast");
     }
     public void GiveHealth(float amount){
-        BroadcastRemoteMethod("GiveHealthBroadcast", amount);
-    }
-    [SynchronizableMethod]
-    private void TakeHealthBroadcast(float amount){
-        currentHealth -= amount;
-    }
-    [SynchronizableMethod]
-    private void GiveHealthBroadcast(float amount){
         currentHealth += amount;
+        BroadcastRemoteMethod("UpdateUIBroadcast");
+    }
+    [SynchronizableMethod]
+    private void UpdateUIBroadcast(){
+        GameUIManager.Instance.UpdateUI();
     }
     private void Die(){
-        BroadcastRemoteMethod("DieBroadcast");
-    }
-    [SynchronizableMethod]
-    private void DieBroadcast(){
-        
+        GameManager.Instance.DestroyAvatar(gameObject.name);
+        print(gameObject.name);
     }
 }

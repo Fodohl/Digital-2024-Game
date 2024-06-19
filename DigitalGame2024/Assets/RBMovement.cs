@@ -55,9 +55,9 @@ public class RBMovement : CommunicationBridge {
     
     void Start() {
         playerScale =  transform.localScale;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
         if (avatar.IsMe) {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             transform.GetChild(2).GetChild(0).gameObject.SetActive(false);
         }
     }
@@ -84,10 +84,12 @@ public class RBMovement : CommunicationBridge {
         crouching = Input.GetKey(KeyCode.LeftControl);
       
         //Crouching
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-            StartCrouch();
-        if (Input.GetKeyUp(KeyCode.LeftControl))
-            StopCrouch();
+        if (avatar.IsMe){
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+                StartCrouch();
+            if (Input.GetKeyUp(KeyCode.LeftControl))
+                StopCrouch();
+        }
     }
 
     private void StartCrouch() {
