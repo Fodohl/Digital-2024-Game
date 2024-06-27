@@ -668,9 +668,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d65e7c9d6fc2e4931a293e939b20c76c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchForce: 10
-  launchDirection: {x: 1, y: 1, z: 0}
-  disableExternalForces: 1
+  launchForce: 100
+  launchDirection: {x: 0, y: 1, z: 0}
 --- !u!65 &1415598369
 BoxCollider:
   m_ObjectHideFlags: 0
