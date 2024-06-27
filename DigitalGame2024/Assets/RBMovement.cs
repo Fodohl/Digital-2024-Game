@@ -3,12 +3,15 @@
 using System;
 using UnityEngine;
 using Alteruna;
+using System.Collections;
+using System.Collections.Generic;
 
 public class RBMovement : CommunicationBridge {
 
     //Assingables
     public Transform playerCam;
     public Transform orientation;
+    [SerializeField] private GameObject playerMesh;
     
     //Other
     private RigidbodySynchronizable rb;
@@ -41,16 +44,25 @@ public class RBMovement : CommunicationBridge {
     public float jumpForce = 550f;
     
     //Input
-    float x, y;
-    bool jumping, sprinting, crouching;
+    [HideInInspector]
+    public float x, y;
+    [HideInInspector]
+    public bool jumping, crouching;
+    [HideInInspector]
+    public float sprinting;
     
     //Sliding
     private Vector3 normalVector = Vector3.up;
     private Vector3 wallNormalVector;
+    private float originalMaxSpeed; 
 
     void Awake() {
         rb = GetComponent<RigidbodySynchronizable>();
         avatar = GetComponent<Alteruna.Avatar>();
+        if (!avatar.IsMe){
+            GetComponentInChildren<AudioListener>().enabled = false;
+        }
+        originalMaxSpeed = maxSpeed;
     }
     
     void Start() {
@@ -58,7 +70,7 @@ public class RBMovement : CommunicationBridge {
         if (avatar.IsMe) {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            transform.GetChild(2).GetChild(0).gameObject.SetActive(false);
+            playerMesh.SetActive(false);
         }
     }
 
@@ -82,7 +94,8 @@ public class RBMovement : CommunicationBridge {
         y = Input.GetAxisRaw("Vertical");
         jumping = Input.GetButton("Jump");
         crouching = Input.GetKey(KeyCode.LeftControl);
-      
+        sprinting = (Input.GetKey(KeyCode.LeftShift) && x == 0 && y > 0) ? Mathf.Lerp(sprinting, 1, 0.1f) : Mathf.Lerp(sprinting, 0, 0.1f);
+        maxSpeed = (Input.GetKey(KeyCode.LeftShift) && x == 0 && y > 0) ? Mathf.Lerp(maxSpeed, 10.5f, 0.1f) : Mathf.Lerp(maxSpeed, originalMaxSpeed, 0.1f);
         //Crouching
         if (avatar.IsMe){
             if (Input.GetKeyDown(KeyCode.LeftControl))
@@ -105,7 +118,6 @@ public class RBMovement : CommunicationBridge {
         transform.localScale = playerScale;
         transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
     }
-
     private void Movement() {
         //Extra gravity
         rb.AddForce(Vector3.down * Time.deltaTime * 10);
@@ -119,21 +131,17 @@ public class RBMovement : CommunicationBridge {
         
         //If holding jump && ready to jump, then jump
         if (readyToJump && jumping) Jump();
-
-        //Set max speed
-        float maxSpeed = this.maxSpeed;
         
         //If sliding down a ramp, add force down so player stays grounded and also builds speed
         if (crouching && grounded && readyToJump) {
             rb.AddForce(Vector3.down * Time.deltaTime * 3000);
             return;
         }
-        
         //If speed is larger than maxspeed, cancel out the input so you don't go over max speed
         if (x > 0 && xMag > maxSpeed) x = 0;
         if (x < 0 && xMag < -maxSpeed) x = 0;
         if (y > 0 && yMag > maxSpeed) y = 0;
-        if (y < 0 && yMag < -maxSpeed) y = 0;
+        if (y < 0 && yMag < -0.7 * maxSpeed) y = 0;
 
         //Some multipliers
         float multiplier = 1f, multiplierV = 1f;

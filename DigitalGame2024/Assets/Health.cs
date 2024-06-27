@@ -10,14 +10,12 @@ public class Health : AttributesSync {
     private void Awake(){
         currentHealth = startingHealth;
     }
-    private void Update(){
-        if (currentHealth <= 0f){
-            Die();
-        }
-    }
-    public void TakeHealth(float amount){
+    public void TakeHealth(float amount, User enemyUser){
         currentHealth -= amount;
         BroadcastRemoteMethod("UpdateUIBroadcast");
+        if (currentHealth <= 0f){
+            Die(enemyUser);
+        }
     }
     public void GiveHealth(float amount){
         currentHealth += amount;
@@ -27,8 +25,12 @@ public class Health : AttributesSync {
     private void UpdateUIBroadcast(){
         GameUIManager.Instance.UpdateUI();
     }
-    private void Die(){
-        GameManager.Instance.DestroyAvatar(gameObject.name);
-        print(gameObject.name);
+    private void Die(User enemyUser){
+        BroadcastRemoteMethod("AddKill", enemyUser.Name);
+        GameManager.Instance.DestroyAvatar(gameObject.GetComponent<Alteruna.Avatar>().Possessor, gameObject.name);
+    }
+    [SynchronizableMethod]
+    private void AddKill(string name) {
+        GameManager.Instance.AddKills(Multiplayer.GetUser(name));
     }
 }

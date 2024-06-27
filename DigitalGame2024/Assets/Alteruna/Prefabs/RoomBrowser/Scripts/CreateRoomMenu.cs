@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Alteruna
 {
-	public class CreateRoomMenu : CommunicationBridge
+	public class CreateRoomMenu : BaseRoomBrowser
 	{
 		[Range(0, 30)]
 		public int MaxNameLength = 20; // It's recommended to limit the length of RoomName since strings can easily scale up bandwith usage.
@@ -30,16 +31,27 @@ namespace Alteruna
 		[SerializeField] private Button _buttonCreateRoom;
 
 		private CustomRoomInfo _customRoomInfo;
+		private List<MapInfo> _mapDescriptions = new List<MapInfo>();
 
+
+		private new void OnEnable()
+		{
+			base.OnEnable();
+			Multiplayer.OnRoomCreated.AddListener(CreatedRoom);
+		}
+
+		private void OnDisable()
+		{
+			Multiplayer.OnRoomCreated.RemoveListener(CreatedRoom);
+		}
 
 		void Start()
 		{
 			_customRoomInfo = new CustomRoomInfo();
 
 			RoomNameChanged(Multiplayer.Me.Name);
-			PopulateDropdownWithEnumValues(_dropdownGameMode, typeof(GameMode));
+			PopulateDropdownWithEnumValues<GameMode>(_dropdownGameMode);
 			PopulateDropdownWithSceneNames(_dropdownScene);
-			SetMapInfo();
 
 			_inputRoomName.characterLimit = MaxNameLength;
 
@@ -51,8 +63,6 @@ namespace Alteruna
 			_toggleHideRoom.onValueChanged.AddListener(ToggleHideRoom);
 
 			_buttonCreateRoom.onClick.AddListener(Submit);
-
-			Multiplayer.OnRoomCreated.AddListener(CreatedRoom);
 		}
 
 		private void ToggleHideRoom(bool value)
@@ -104,7 +114,7 @@ namespace Alteruna
 			HandleMapValue(value);
 			SetMapInfo();
 
-			if (_customRoomInfo.SceneIndex != value)
+			if (_customRoomInfo.SceneIndex != _mapDescriptions[value].BuildIndex)
 				_dropdownScene.SetValueWithoutNotify(_customRoomInfo.SceneIndex);
 		}
 
@@ -112,13 +122,23 @@ namespace Alteruna
 		{
 			gameObject.SetActive(false);
 			_textInviteCode.text = _toggleHideRoom.isOn ? inviteCode : "";
+
+			if (success && MapDescriptions.Instance.ChangeSceneOnRoomJoined)
+			{
+				CustomRoomInfo roomInfo = Reader.DeserializePackedString<CustomRoomInfo>(room.Name);
+				Multiplayer.LoadScene(roomInfo.SceneIndex, SpawnAvatarAfterLoad);
+			}
+			else
+			{
+				Debug.LogError("Failed to create room!");
+			}
 		}
 
 #endregion
 
 		private void SetMapInfo()
 		{
-			MapInfo info = MapDescriptions.Instance.GetMapDescription(_customRoomInfo.SceneIndex);
+			MapInfo info = _mapDescriptions.FirstOrDefault(m => m.BuildIndex == _customRoomInfo.SceneIndex);
 			_imageMap.sprite = info.Image;
 			_textMapInfo.text = info.Description;
 			_textMapTitle.text = info.Title;
@@ -149,7 +169,7 @@ namespace Alteruna
 
 		private void HandleMapValue(int value)
 		{
-			_customRoomInfo.SceneIndex = value;
+			_customRoomInfo.SceneIndex = _mapDescriptions[value].BuildIndex;
 		}
 
 		public void Submit()
@@ -218,48 +238,50 @@ namespace Alteruna
 		/// <summary>
 		/// Populates a dropdown with options based on an enum type.
 		/// </summary>
-		/// <param name="dropdown">The dropdown to populate,</param>
-		/// <param name="enumType">The enum type to base the values on,</param>
-		private void PopulateDropdownWithEnumValues(TMP_Dropdown dropdown, Type enumType)
+		/// <param name="dropdown">The dropdown to populate.</param>
+		/// <typeparam name="T">The enum type to base the values on.</typeparam>
+		private void PopulateDropdownWithEnumValues<T>(TMP_Dropdown dropdown) where T : Enum
 		{
-			if (enumType != null && enumType.IsEnum)
+			// Clear existing options
+			dropdown.ClearOptions();
+
+			// Retrieve enum names dynamically
+			string[] names = Enum.GetNames(typeof(T));
+
+			// Create a list of OptionData to store enum member names
+			List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
+
+			foreach (string name in names)
 			{
-				// Clear existing options
-				dropdown.ClearOptions();
-
-				// Retrieve enum names dynamically
-				string[] names = Enum.GetNames(enumType);
-
-				// Create a list of OptionData to store enum member names
-				List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
-
-				foreach (string name in names)
-				{
-					// Add the option to the dropdown
-					options.Add(new TMP_Dropdown.OptionData(name));
-				}
-
-				dropdown.options = options;
+				// Add enum name as an option to the dropdown
+				options.Add(new TMP_Dropdown.OptionData(name));
 			}
-			else
-			{
-				Debug.LogError("Invalid enum type");
-			}
+
+			dropdown.options = options;
 		}
 
 		private void PopulateDropdownWithSceneNames(TMP_Dropdown dropdown)
 		{
 			dropdown.ClearOptions();
-
 			List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
-			var descriptions = MapDescriptions.Instance.GetValidMapDescriptions();
 
-			foreach (var item in descriptions)
+			_mapDescriptions.Clear();
+			_mapDescriptions = MapDescriptions.Instance.GetValidMapDescriptions();
+
+			if (_mapDescriptions.Count <= 0)
+			{
+				Debug.LogError("Could not get any MapDescriptions." +
+					"This is usually due to not having any scenes in build settings or that all descriptions are hidden.");
+			}
+
+			foreach (var item in _mapDescriptions)
 			{
 				options.Add(new TMP_Dropdown.OptionData(item.Title));
 			}
-
 			dropdown.options = options;
+
+			HandleMapValue(0);
+			SetMapInfo();
 		}
 
 #if UNITY_EDITOR

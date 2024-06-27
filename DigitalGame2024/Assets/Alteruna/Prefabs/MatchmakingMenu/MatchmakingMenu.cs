@@ -352,5 +352,11 @@ namespace Alteruna
 				State = GameState.Full;
 			}
 		}
+		
+		public new void Reset()
+		{
+			base.Reset();
+			EnsureEventSystem.Ensure(true);
+		}
 	}
 }
