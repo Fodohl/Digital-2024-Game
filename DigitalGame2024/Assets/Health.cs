@@ -5,35 +5,32 @@ using UnityEngine;
 
 public class Health : AttributesSync {
     private const float startingHealth = 100f;
-    [SynchronizableField]public float currentHealth;
+    [SynchronizableField] public float currentHealth;
     
     private void Awake(){
         currentHealth = startingHealth;
     }
-    private void Update(){
+    public void TakeHealth(float amount, User enemyUser){
+        currentHealth -= amount;
+        BroadcastRemoteMethod("UpdateUIBroadcast");
         if (currentHealth <= 0f){
-            Die();
+            Die(enemyUser);
         }
     }
-    public void TakeHealth(float amount){
-        BroadcastRemoteMethod("TakeHealthBroadcast", amount);
-    }
     public void GiveHealth(float amount){
-        BroadcastRemoteMethod("GiveHealthBroadcast", amount);
-    }
-    [SynchronizableMethod]
-    private void TakeHealthBroadcast(float amount){
-        currentHealth -= amount;
-    }
-    [SynchronizableMethod]
-    private void GiveHealthBroadcast(float amount){
         currentHealth += amount;
-    }
-    private void Die(){
-        BroadcastRemoteMethod("DieBroadcast");
+        BroadcastRemoteMethod("UpdateUIBroadcast");
     }
     [SynchronizableMethod]
-    private void DieBroadcast(){
-        
+    private void UpdateUIBroadcast(){
+        GameUIManager.Instance.UpdateUI();
+    }
+    private void Die(User enemyUser){
+        BroadcastRemoteMethod("AddKill", enemyUser.Name);
+        GameManager.Instance.DestroyAvatar(gameObject.GetComponent<Alteruna.Avatar>().Possessor, gameObject.name);
+    }
+    [SynchronizableMethod]
+    private void AddKill(string name) {
+        GameManager.Instance.AddKills(Multiplayer.GetUser(name));
     }
 }

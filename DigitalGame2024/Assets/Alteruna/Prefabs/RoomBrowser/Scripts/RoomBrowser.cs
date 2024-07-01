@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Alteruna
 {
-	public class RoomBrowser : CommunicationBridge
+	public class RoomBrowser : BaseRoomBrowser
 	{
 		public enum Column
 		{
@@ -69,6 +69,20 @@ namespace Alteruna
 		private bool _sortDescending = false;
 
 
+		private new void OnEnable()
+		{
+			base.OnEnable();
+
+			Multiplayer.OnRoomJoined.AddListener(JoinedRoom);
+			CheckCanJoinRoom();
+			Multiplayer.RefreshRoomList();
+		}
+
+		private void OnDisable()
+		{
+			Multiplayer.OnRoomJoined.RemoveListener(JoinedRoom);
+		}
+
 		private void Start()
 		{
 			_buttonJoin.interactable = false;
@@ -92,39 +106,25 @@ namespace Alteruna
 				Multiplayer.OnRoomListUpdated.AddListener(RoomsUpdated);
 				Multiplayer.OnConnected.AddListener(Connected);
 				Multiplayer.OnDisconnected.AddListener(Disconnected);
-				Multiplayer.OnRoomJoined.AddListener(JoinedRoom);
 				Multiplayer.OnJoinRejected.AddListener(JoinRejected);
 				Multiplayer.OnRoomLeft.AddListener(LeftRoom);
 
-				if (Multiplayer.InRoom)
-					SetCanJoinRoom(false);
-				else
-					SetCanJoinRoom(true);
-			}
-		}
-
-		private void FilterChanged()
-		{
-			SelectRoom(null);
-			_filteredRows = FilterRows();
-			DisplayFilteredRows();
-		}
-
-		private void DisplayFilteredRows()
-		{
-			foreach (var row in _activeRows)
-			{
-				row.gameObject.SetActive(false);
-			}
-			foreach (var row in _filteredRows)
-			{
-				row.gameObject.SetActive(true);
+				CheckCanJoinRoom();
 			}
 		}
 
 		private void Update()
 		{
 			_refreshTimer -= Time.deltaTime;
+		}
+
+
+		public void Refresh()
+		{
+			if (_refreshTimer > 0) return;
+
+			_refreshTimer = _refreshDelay;
+			Multiplayer.RefreshRoomList();
 		}
 
 		public void SelectRoom(RoomBrowserRow roomInfo)
@@ -144,6 +144,18 @@ namespace Alteruna
 			_selectedRow = roomInfo;
 			_selectedRow.ChangeSelection(true);
 			_buttonJoin.interactable = true;
+		}
+
+		private bool CheckCanJoinRoom()
+		{
+			SetCanJoinRoom(!Multiplayer.InRoom);
+			return !Multiplayer.InRoom;
+		}
+
+		private void SetCanJoinRoom(bool canJoin)
+		{
+			_buttonJoin.gameObject.SetActive(canJoin);
+			_buttonLeave.gameObject.SetActive(!canJoin);
 		}
 
 		public void JoinRoom()
@@ -183,20 +195,11 @@ namespace Alteruna
 			Multiplayer.CurrentRoom.Leave();
 		}
 
-		public void Refresh()
-		{
-			if (_refreshTimer > 0) return;
-
-			_refreshTimer = _refreshDelay;
-			Multiplayer.RefreshRoomList();
-		}
-
 		#region Multiplayer Events
 
 		private void RoomsUpdated(Multiplayer multiplayer)
 		{
-			Debug.Log("RoomsUpdated");
-			List<Room> newRooms = Multiplayer.AvailableRooms.Where(r => !r.InviteOnly).ToList(); // Never show private rooms.
+			List<Room> newRooms = Multiplayer.AvailableRooms;
 
 			SelectRoom(null);
 
@@ -255,6 +258,12 @@ namespace Alteruna
 		{
 			SetCanJoinRoom(false);
 			gameObject.SetActive(false);
+
+			if (MapDescriptions.Instance.ChangeSceneOnRoomJoined)
+			{
+				CustomRoomInfo roomInfo = Reader.DeserializePackedString<CustomRoomInfo>(room.Name);
+				Multiplayer.LoadScene(roomInfo.SceneIndex, SpawnAvatarAfterLoad);
+			}
 		}
 
 		private void JoinRejected(Multiplayer multiplayer, string rejectReason)
@@ -271,10 +280,23 @@ namespace Alteruna
 
 		#endregion
 
-		private void SetCanJoinRoom(bool canJoin)
+		private void FilterChanged()
 		{
-			_buttonJoin.gameObject.SetActive(canJoin);
-			_buttonLeave.gameObject.SetActive(!canJoin);
+			SelectRoom(null);
+			_filteredRows = FilterRows();
+			DisplayFilteredRows();
+		}
+
+		private void DisplayFilteredRows()
+		{
+			foreach (var row in _activeRows)
+			{
+				row.gameObject.SetActive(false);
+			}
+			foreach (var row in _filteredRows)
+			{
+				row.gameObject.SetActive(true);
+			}
 		}
 
 		private List<RoomBrowserRow> FilterRows()
@@ -362,6 +384,12 @@ namespace Alteruna
 				sortedRooms[i].transform.SetSiblingIndex(i);
 			}
 			OnRowsSorted.Invoke();
+		}
+		
+		public new void Reset()
+		{
+			base.Reset();
+			EnsureEventSystem.Ensure(true);
 		}
 	}
 }

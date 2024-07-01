@@ -310,6 +310,12 @@ namespace Alteruna
 			}
 		}
 
+		public new void Reset()
+		{
+			base.Reset();
+			EnsureEventSystem.Ensure(true);
+		}
+
 		private struct RoomObject
 		{
 			public readonly GameObject GameObject;

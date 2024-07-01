@@ -554,10 +554,10 @@ PlayerSettings:
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
-  cameraUsageDescription: 
+  cameraUsageDescription: none
   locationUsageDescription: 
-  microphoneUsageDescription: 
-  bluetoothUsageDescription: 
+  microphoneUsageDescription: none
+  bluetoothUsageDescription: none
   macOSTargetOSVersion: 10.13.0
   switchNMETAOverride: 
   switchNetLibKey: 

@@ -27,6 +27,7 @@ public class MapInfoDrawer : PropertyDrawer
 
 		EditorGUI.indentLevel = 0;
 
+		SerializedProperty hideProperty = property.FindPropertyRelative("Hidden");
 		SerializedProperty imageProperty = property.FindPropertyRelative("Image");
 		SerializedProperty titleProperty = property.FindPropertyRelative("Title");
 		SerializedProperty descriptionProperty = property.FindPropertyRelative("Description");
@@ -37,6 +38,11 @@ public class MapInfoDrawer : PropertyDrawer
 
 		if (property.isExpanded)
 		{
+			GUIContent hideLabel = new GUIContent("Hidden", "Marks if this element should be hidden or not.\n" +
+				"Used by the CreateRoomMenu component to hide scenes in build settings that shouldn't be selectable");
+			EditorGUI.PropertyField(position, hideProperty, hideLabel);
+
+			position.y += EditorGUIUtility.singleLineHeight + spacing;
 			DrawSceneSelector(position, property);
 
 			position.y += EditorGUIUtility.singleLineHeight + spacing;
