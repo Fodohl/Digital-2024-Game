@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using Alteruna;
 using System.Collections.Generic;
-using System.Data;
 
 public class GameManager : AttributesSync
 {
@@ -47,11 +46,7 @@ public class GameManager : AttributesSync
             Destroy(gameObject);
         }
     }
-    public void SpawnAvatar(){
-        Multiplayer.SpawnAvatar(new Vector3(0, 10, 0));
-        gameState = GameState.Playing;
-        GameUIManager.Instance.UpdateUI();
-    }
+
     private void Update(){
         if (Input.GetKeyDown(KeyCode.P))
         {

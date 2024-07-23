@@ -5,10 +5,11 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GameUIManager : CommunicationBridge
+public class GameUIManager : AttributesSync
 {
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private GameObject[] UiPanels;
+    [SerializeField] private GameObject spawn;
     [SerializeField] private GameObject scorePrefab;
     [SerializeField] private GameObject scoreSection;
     private List<GameObject> scoreObjects = new List<GameObject>();
@@ -88,6 +89,8 @@ public class GameUIManager : CommunicationBridge
         }
     }
     public void SpawnAvatar(){
-        GameManager.Instance.SpawnAvatar();
+        Multiplayer.SpawnAvatar(new Vector3(2397, 12, 2688));
+        GameManager.Instance.gameState = GameManager.GameState.Playing;
+        UpdateUI();
     }
 }
