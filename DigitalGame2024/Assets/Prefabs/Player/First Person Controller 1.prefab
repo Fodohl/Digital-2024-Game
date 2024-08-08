@@ -356,6 +356,7 @@ GameObject:
   - component: {fileID: 6859686239493551723}
   - component: {fileID: -2084092409833315471}
   - component: {fileID: 8714516855012939698}
+  - component: {fileID: -4542654088821471021}
   m_Layer: 3
   m_Name: First Person Controller 1
   m_TagString: Player
@@ -388,7 +389,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2099865938462262715}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8b5e3afb81e359349bb36f039b8a9801, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -496,7 +497,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2099865938462262715}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 759ee63067c50e242b29a3fe1c37ff3f, type: 3}
   m_Name: 
@@ -590,6 +591,37 @@ MonoBehaviour:
   LocalMethodBehavior: 1
   animator: {fileID: 222132610723594785}
   rb: {fileID: 1569931506528517090}
+  rateOfChange: 0.25
+--- !u!114 &-4542654088821471021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099865938462262715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b6da7c490d0fe14696724defc04adb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 0}
+  cam: {fileID: 6301626704990454919}
+  playerMesh:
+  - {fileID: 8028644955622908094}
+  groundCheck: {fileID: 7470073772495048041}
+  groundCheckRange: 0.3
+  notPlayerMask:
+    serializedVersion: 2
+    m_Bits: 55
+  LookSens: 3
+  speed: 40
+  jumpHeight: 15
+  jumpKey: 32
+  crouchKey: 306
+  isGrounded: 0
+  isSliding: 0
+  slopeCounter: 2
+  moveDirection: {x: 0, y: 0, z: 0}
 --- !u!1 &2574833220682708474
 GameObject:
   m_ObjectHideFlags: 0
@@ -2702,6 +2734,8 @@ MonoBehaviour:
   Multiplayer: {fileID: 0}
   currentGun: {fileID: 11400000, guid: 03d14bf0f0ed5e44d87c3dab62c76973, type: 2}
   parent: {fileID: 3444151381202676003}
+  bloodSplatterEffect: {fileID: 6455583582695758777, guid: 804c499771ab3c14f8bfa7d67ac85afa,
+    type: 3}
 --- !u!1 &6634320391316526789
 GameObject:
   m_ObjectHideFlags: 0

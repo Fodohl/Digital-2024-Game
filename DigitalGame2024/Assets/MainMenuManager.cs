@@ -25,7 +25,7 @@ public class MainMenuManager : AttributesSync
     }
     public void Host(){
         if (Multiplayer.IsConnected){
-            Multiplayer.CreateRoom(PlayerPrefs.GetString("username")+ "'s room");
+            Multiplayer.CreateRoom(Multiplayer.GetUser().Name + "'s room");
             Multiplayer.LoadScene("Game");
         }
     }

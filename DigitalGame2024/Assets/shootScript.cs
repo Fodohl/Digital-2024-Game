@@ -6,6 +6,7 @@ public class shootScript : CommunicationBridge
 {
     [SerializeField] private CustomGun currentGun;
     [SerializeField] private Transform parent;
+    [SerializeField] private GameObject bloodSplatterEffect;
     private bool canShoot = true;
     private int currentAmmo;
     private void Awake(){
@@ -28,6 +29,7 @@ public class shootScript : CommunicationBridge
                 )
                 {
                     hit.transform.gameObject.GetComponent<Health>().TakeHealth(currentGun.damage, parent.gameObject.GetComponent<Alteruna.Avatar>().Possessor);
+                    Instantiate(bloodSplatterEffect, hit.point, Quaternion.identity);
                 }
             }
             currentAmmo--;
