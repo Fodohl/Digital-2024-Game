@@ -35,7 +35,7 @@ namespace Alteruna
 		{
 			if (EventSystem.current == null)
 			{
-				Debug.LogError("Found No EventSystem. Did you forget to add one?");
+				Debug.LogWarning("Found No EventSystem. Did you forget to add one?");
 			}
 			_buttonClose.onClick.AddListener(() => _container.gameObject.SetActive(false));
 			_container.gameObject.SetActive(false);

@@ -266,6 +266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
+  SpawnAvatarAfterLoad: 1
   _refreshDelay: 1
   _sortColumn: 0
   _rowsContainer: {fileID: 1685942074005588217}
@@ -3625,9 +3626,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1685942073472760939}
+  - component: {fileID: 1822944547}
   - component: {fileID: 1685942073472760936}
   - component: {fileID: 1685942073472760937}
   - component: {fileID: 1685942073472760942}
+  - component: {fileID: 1591523257208938962}
   m_Layer: 5
   m_Name: Room Browser
   m_TagString: Untagged
@@ -3659,6 +3662,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1822944547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685942073472760943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baf7984d079cf8646a691c6cc4634702, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 0}
+  SpawnAvatarAfterLoad: 1
 --- !u!223 &1685942073472760936
 Canvas:
   m_ObjectHideFlags: 0
@@ -3720,6 +3737,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1591523257208938962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685942073472760943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 141f9b84258db0d48bd81c5e03977f70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1685942073500071605
 GameObject:
   m_ObjectHideFlags: 0
@@ -7827,6 +7856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
+  SpawnAvatarAfterLoad: 1
   MaxNameLength: 20
   MaxPlayers: 10
   _imageMap: {fileID: 7529696131712434748}
@@ -8307,7 +8337,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
+  m_fontSize: 31.85
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -17727,7 +17757,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 23.85
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

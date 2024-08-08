@@ -13,7 +13,6 @@
             For example, instead of playing walk animation, you should consider animating based on the velocity of the character locally.
             </remarks>
     </member>
-    <member name="M:Alteruna.AnimationSynchronizable.#ctor"></member>
     <member name="F:Alteruna.AnimationSynchronizable.Animator"></member>
     <member name="M:Alteruna.AnimationSynchronizable.AnimatorUpdate(System.Single)"></member>
     <member name="M:Alteruna.AnimationSynchronizable.Play(System.Int32)"></member>
@@ -23,6 +22,7 @@
     <member name="M:Alteruna.AnimationSynchronizable.Play(System.String,System.Int32)"></member>
     <member name="M:Alteruna.AnimationSynchronizable.Play(System.String,System.Int32,System.Single)"></member>
     <member name="M:Alteruna.AnimationSynchronizable.Rebind"></member>
+    <member name="M:Alteruna.AnimationSynchronizable.Reset"></member>
     <member name="M:Alteruna.AnimationSynchronizable.SetBool(System.Int32,System.Boolean)"></member>
     <member name="M:Alteruna.AnimationSynchronizable.SetBool(System.String,System.Boolean)"></member>
     <member name="M:Alteruna.AnimationSynchronizable.SetFloat(System.Int32,System.Single)"></member>
@@ -33,6 +33,7 @@
     <member name="M:Alteruna.AnimationSynchronizable.SetTarget(UnityEngine.AvatarTarget,System.Single)"></member>
     <member name="M:Alteruna.AnimationSynchronizable.SetTrigger(System.Int32)"></member>
     <member name="M:Alteruna.AnimationSynchronizable.SetTrigger(System.String)"></member>
+    <member name="M:Alteruna.AnimationSynchronizable.Start"></member>
     <member name="M:Alteruna.AnimationSynchronizable.StartPlayback"></member>
     <member name="M:Alteruna.AnimationSynchronizable.StopPlayback"></member>
     <member name="T:Alteruna.AttributesSync">
@@ -382,7 +383,7 @@
     <member name="M:Alteruna.CommunicationBridge.SetMultiplayerComponent(System.Boolean)">
       <summary>
             If the <c>Multiplayer</c> reference is null, set it to active <c>Multiplayer</c> component.
-            <example><code>
+            <example><code language="cs">
             void OnEnable() =&gt; SetMultiplayerComponent();
             </code><c>SetMultiplayerComponent</c> call it in <c>OnEnable</c> unless hidden.
             </example></summary>
@@ -452,7 +453,6 @@
             A component for synchronizing the enabling or disabling of a GameObject across multiple clients in a multiplayer environment.
             </summary>
     </member>
-    <member name="M:Alteruna.EnableSynchronizable.#ctor"></member>
     <member name="M:Alteruna.EnableSynchronizable.Possessed(System.Boolean,Alteruna.User)">
       <summary>
             Called when the object is possessed. Sets the ownership status of the GameObject.
@@ -460,11 +460,8 @@
       <param name="isMe">Boolean indicating if the current user is the owner.</param>
       <param name="user">The user who is possessing the object.</param>
     </member>
-    <member name="T:Alteruna.Encryption">
-      <summary>
-            Simple encryption that does not make increase the size of the data transmitted.
-            </summary>
-    </member>
+    <member name="M:Alteruna.EnableSynchronizable.Reset"></member>
+    <member name="T:Alteruna.Encryption"></member>
     <member name="M:Alteruna.Encryption.ReadEncrypted``1(Alteruna.Reader)"></member>
     <member name="M:Alteruna.Encryption.ReadEncrypted(Alteruna.Reader)"></member>
     <member name="M:Alteruna.Encryption.WriteEncrypted(Alteruna.Writer,System.Byte[])"></member>
@@ -650,96 +647,28 @@
             When false, all clients including the sender will receive inputs simultaneously. (assuming identical connection)
             </summary>
     </member>
-    <member name="T:Alteruna.InterpolationTransformSynchronizable">
-      <summary>
-            Interpolate transform position and rotation using selected interpolation method.
-            </summary>
-      <remarks>
-        <img src="../images/Alteruna.InterpolationTransformSynchronizable.png" />
-      </remarks>
-    </member>
+    <member name="T:Alteruna.InterpolationTransformSynchronizable"></member>
     <member name="M:Alteruna.InterpolationTransformSynchronizable.AssembleData(Alteruna.Writer,System.Byte)"></member>
     <member name="M:Alteruna.InterpolationTransformSynchronizable.Awake"></member>
-    <member name="F:Alteruna.InterpolationTransformSynchronizable.ClientPrediction">
-      <summary>
-            Enabling this can reduces the perceived latency.
-            It is intended to be used when <c>MovePosition</c> is frequently called.
-            </summary>
-    </member>
+    <member name="F:Alteruna.InterpolationTransformSynchronizable.ClientPrediction"></member>
     <member name="M:Alteruna.InterpolationTransformSynchronizable.DisassembleData(Alteruna.Reader,System.Byte)"></member>
     <member name="M:Alteruna.InterpolationTransformSynchronizable.FixedUpdate"></member>
-    <member name="F:Alteruna.InterpolationTransformSynchronizable.InterpolationMethod">
-      <summary>
-            Behavior of transform
-            </summary>
-    </member>
-    <member name="F:Alteruna.InterpolationTransformSynchronizable.LocalBehaviour">
-      <summary>
-            Behavior of transform when set locally.
-            </summary>
-    </member>
-    <member name="M:Alteruna.InterpolationTransformSynchronizable.MovePosition(UnityEngine.Vector3)">
-      <summary>
-        <para>Moves the transform towards position.</para>
-      </summary>
-      <param name="pos">Provides the new position for the transform object.</param>
-    </member>
-    <member name="M:Alteruna.InterpolationTransformSynchronizable.MoveRotation(UnityEngine.Quaternion)">
-      <summary>
-        <para>Rotates the transform to rotation.</para>
-      </summary>
-      <param name="rot">The new rotation for the transform.</param>
-    </member>
-    <member name="M:Alteruna.InterpolationTransformSynchronizable.MoveRotation(UnityEngine.Vector3)">
-      <summary>
-        <para>Rotates the transform to rotation.</para>
-      </summary>
-      <param name="rot">The new rotation for the transform.</param>
-    </member>
+    <member name="F:Alteruna.InterpolationTransformSynchronizable.InterpolationMethod"></member>
+    <member name="F:Alteruna.InterpolationTransformSynchronizable.LocalBehaviour"></member>
+    <member name="M:Alteruna.InterpolationTransformSynchronizable.MovePosition(UnityEngine.Vector3)"></member>
+    <member name="M:Alteruna.InterpolationTransformSynchronizable.MoveRotation(UnityEngine.Quaternion)"></member>
+    <member name="M:Alteruna.InterpolationTransformSynchronizable.MoveRotation(UnityEngine.Vector3)"></member>
     <member name="M:Alteruna.InterpolationTransformSynchronizable.OnValidate"></member>
-    <member name="P:Alteruna.InterpolationTransformSynchronizable.position">
-      <summary>
-        <para>The world space position of the Transform.</para>
-        <para>On set, moves position.</para>
-      </summary>
-    </member>
+    <member name="P:Alteruna.InterpolationTransformSynchronizable.position"></member>
     <member name="M:Alteruna.InterpolationTransformSynchronizable.Reset"></member>
-    <member name="M:Alteruna.InterpolationTransformSynchronizable.SetInterpolationMethod(Alteruna.InterpolationTransformSynchronizable.InterpolationMethodType)">
-      <summary>
-        <para>Set interpolation method of interpolation transform synchronizable to interpolation method</para>
-      </summary>
-      <param name="method">The interpolation method for the interpolation transform synchronizable</param>
-    </member>
+    <member name="M:Alteruna.InterpolationTransformSynchronizable.SetInterpolationMethod(Alteruna.InterpolationTransformSynchronizable.InterpolationMethodType)"></member>
     <member name="M:Alteruna.InterpolationTransformSynchronizable.SetLocalBehaviour(Alteruna.InterpolationTransformSynchronizable.LocalBehaviourType)"></member>
-    <member name="M:Alteruna.InterpolationTransformSynchronizable.SetPosition(UnityEngine.Vector3)">
-      <summary>
-        <para>Sets the transform to a position.</para>
-      </summary>
-      <param name="pos">Provides the new position for the transform object.</param>
-    </member>
-    <member name="M:Alteruna.InterpolationTransformSynchronizable.SetRotation(UnityEngine.Quaternion)">
-      <summary>
-        <para>Set the rotation the transform to rotation.</para>
-      </summary>
-      <param name="rot">The new rotation for the transform.</param>
-    </member>
-    <member name="M:Alteruna.InterpolationTransformSynchronizable.SetRotation(UnityEngine.Vector3)">
-      <summary>
-        <para>Set the rotation the transform to rotation.</para>
-      </summary>
-      <param name="rot">The new rotation for the transform.</param>
-    </member>
+    <member name="M:Alteruna.InterpolationTransformSynchronizable.SetPosition(UnityEngine.Vector3)"></member>
+    <member name="M:Alteruna.InterpolationTransformSynchronizable.SetRotation(UnityEngine.Quaternion)"></member>
+    <member name="M:Alteruna.InterpolationTransformSynchronizable.SetRotation(UnityEngine.Vector3)"></member>
     <member name="M:Alteruna.InterpolationTransformSynchronizable.Update"></member>
-    <member name="T:Alteruna.InterpolationTransformSynchronizable.InterpolationMethodType">
-      <summary>
-            Methods for interpolate, extrapolate, and other.
-            </summary>
-    </member>
-    <member name="T:Alteruna.InterpolationTransformSynchronizable.LocalBehaviourType">
-      <summary>
-            Behavior of how to polate transform locally.
-            </summary>
-    </member>
+    <member name="T:Alteruna.InterpolationTransformSynchronizable.InterpolationMethodType"></member>
+    <member name="T:Alteruna.InterpolationTransformSynchronizable.LocalBehaviourType"></member>
     <member name="T:Alteruna.IServiceListener">
       <summary>
             Service event listener interface.
@@ -1139,17 +1068,19 @@
             </summary>
       <param name="code">Invite code.</param>
     </member>
-    <member name="M:Alteruna.Multiplayer.LoadScene(System.Int32)">
+    <member name="M:Alteruna.Multiplayer.LoadScene(System.Int32,System.Boolean)">
       <summary>
             Load a scene by index and move Multiplayer object and all Avatars to the new scene.
             </summary>
       <param name="sceneId">Build index of target scene.</param>
+      <param name="spawnAvatarOnLoad">Spawns your <see cref="T:Alteruna.Avatar" /> after scene is loaded if true.</param>
     </member>
-    <member name="M:Alteruna.Multiplayer.LoadScene(System.String)">
+    <member name="M:Alteruna.Multiplayer.LoadScene(System.String,System.Boolean)">
       <summary>
             Load a scene by name and move Multiplayer object and all Avatars to the new scene.
             </summary>
       <param name="sceneName">Name of target scene.</param>
+      <param name="spawnAvatarOnLoad">Spawns your <see cref="T:Alteruna.Avatar" /> after scene is loaded if true.</param>
     </member>
     <member name="P:Alteruna.Multiplayer.Lockable"></member>
     <member name="M:Alteruna.Multiplayer.LockRoom">
@@ -1561,7 +1492,7 @@
     </member>
     <member name="M:Alteruna.Reader.DeserializePackedString``1(System.String)">
       <summary>
-            Unpacks a string that has been packed using <see cref="!:SerializeAsString&lt;T&gt;" />.
+            Unpacks a string that has been packed using <see cref="M:Alteruna.Writer.SerializeAndPackString``1(``0)" />.
             </summary>
       <param name="data">string data.</param>
       <typeparam name="T">type</typeparam>
@@ -1631,7 +1562,6 @@
     <member name="M:Alteruna.Rigidbody2DSynchronizable.AssembleData(Alteruna.Writer,System.Byte)"></member>
     <member name="M:Alteruna.Rigidbody2DSynchronizable.Awake"></member>
     <member name="M:Alteruna.Rigidbody2DSynchronizable.DisassembleData(Alteruna.Reader,System.Byte)"></member>
-    <member name="M:Alteruna.Rigidbody2DSynchronizable.FixedUpdate"></member>
     <member name="P:Alteruna.Rigidbody2DSynchronizable.isKinematic">
       <summary>
         <para>Controls whether physics affects the rigidbody.</para>
@@ -1656,14 +1586,22 @@
       <param name="angle">The new rotation angle for the Rigidbody object.</param>
     </member>
     <member name="M:Alteruna.Rigidbody2DSynchronizable.OnCollisionEnter2D(UnityEngine.Collision2D)"></member>
-    <member name="P:Alteruna.Rigidbody2DSynchronizable.position"></member>
+    <member name="P:Alteruna.Rigidbody2DSynchronizable.position">
+      <summary>
+        <para>The position of the rigidbody.</para>
+      </summary>
+    </member>
     <member name="M:Alteruna.Rigidbody2DSynchronizable.Reset"></member>
     <member name="F:Alteruna.Rigidbody2DSynchronizable.Rigidbody">
       <summary>
             Rigidbody to synchronize.
             </summary>
     </member>
-    <member name="P:Alteruna.Rigidbody2DSynchronizable.rotation"></member>
+    <member name="P:Alteruna.Rigidbody2DSynchronizable.rotation">
+      <summary>
+        <para>The rotation of the rigidbody.</para>
+      </summary>
+    </member>
     <member name="M:Alteruna.Rigidbody2DSynchronizable.SetRotation(System.Single)">
       <summary>
         <para>Sets the rotation of the Rigidbody2D to angle (given in degrees).</para>
@@ -1733,7 +1671,6 @@
     <member name="M:Alteruna.RigidbodySynchronizable.AssembleData(Alteruna.Writer,System.Byte)"></member>
     <member name="M:Alteruna.RigidbodySynchronizable.Awake"></member>
     <member name="M:Alteruna.RigidbodySynchronizable.DisassembleData(Alteruna.Reader,System.Byte)"></member>
-    <member name="M:Alteruna.RigidbodySynchronizable.FixedUpdate"></member>
     <member name="P:Alteruna.RigidbodySynchronizable.isKinematic">
       <summary>
             Controls whether physics affects the rigidbody.
@@ -1806,7 +1743,6 @@
             Common Rigidbody synchronizable methods and.
             </summary>
     </member>
-    <member name="M:Alteruna.RigidbodySynchronizableCommon.#ctor"></member>
     <member name="F:Alteruna.RigidbodySynchronizableCommon.AllowCollisionToAssumeOwner">
       <summary>
             When false, collisions will not cause the object to switch which client is simulated on.
@@ -1815,21 +1751,25 @@
     <member name="F:Alteruna.RigidbodySynchronizableCommon.ApplyAsTransform">
       <summary>
             When true, the object will be moved and rotated using its transform directly instead of using the physics engine.
-            This is not recommended, but may resolve some issues where the it doesn't sync correctly.
+            This is not recommended, but may resolve some issues where it doesn't sync correctly.
             </summary>
     </member>
-    <member name="M:Alteruna.RigidbodySynchronizableCommon.AssembleData(Alteruna.Writer,System.Byte)"></member>
     <member name="M:Alteruna.RigidbodySynchronizableCommon.Awake"></member>
-    <member name="M:Alteruna.RigidbodySynchronizableCommon.DisassembleData(Alteruna.Reader,System.Byte)"></member>
     <member name="M:Alteruna.RigidbodySynchronizableCommon.FixedUpdate"></member>
+    <member name="M:Alteruna.RigidbodySynchronizableCommon.ForceUpdate(System.Boolean)">
+      <summary>
+            Forces a sync even if not owned.
+            </summary>
+      <param name="fullSync">Sync absolute data in addition to velocity.</param>
+    </member>
     <member name="F:Alteruna.RigidbodySynchronizableCommon.FullSyncEveryNSync">
       <summary>
-            sync velocity and position every Nth sync.
+            Sync velocity and position every Nth sync.
             </summary>
     </member>
     <member name="F:Alteruna.RigidbodySynchronizableCommon.IgnoredLayers">
       <summary>
-            Ignored layers will not cause the object trigger sync.
+            Ignored layers will not cause the object trigger sync on collision.
             </summary>
     </member>
     <member name="P:Alteruna.RigidbodySynchronizableCommon.isKinematic">
@@ -1850,9 +1790,12 @@
     <member name="M:Alteruna.RigidbodySynchronizableCommon.Reset"></member>
     <member name="F:Alteruna.RigidbodySynchronizableCommon.SendData">
       <summary>
+            When true, this client will sync the object will to all other clients.
+            </summary>
+      <remarks>
             Only one client can control the object at a time.
             Enabling this will disable it on all other clients.
-            </summary>
+            </remarks>
     </member>
     <member name="M:Alteruna.RigidbodySynchronizableCommon.Serialize(Alteruna.Trinity.ITransportStreamWriter,System.Byte,System.Boolean)"></member>
     <member name="M:Alteruna.RigidbodySynchronizableCommon.Sleep">
@@ -1864,6 +1807,9 @@
       <summary>
             How often to automatically sync data in skips of FixedUpdate.
             </summary>
+      <remarks>
+            Only for automatic updates. Changes to velocity, position, etc. will trigger more frequent updates.
+            </remarks>
     </member>
     <member name="M:Alteruna.RigidbodySynchronizableCommon.SyncSettings">
       <summary>
@@ -2300,23 +2246,21 @@
             </summary>
     </member>
     <member name="M:Alteruna.Spawner.Start"></member>
+    <member name="T:Alteruna.SpawnPointer">
+      <summary>
+            This class serves as a reference for spawnpoints for when you switch scenes with <see cref="T:Alteruna.Multiplayer" />
+            and want custom spawn points from that scene.
+            </summary>
+    </member>
+    <member name="M:Alteruna.SpawnPointer.SpawnAvatar">
+      <summary>
+            Spawns your Avatar based on <see cref="F:Alteruna.SpawnPointer.SpawnPoints" /></summary>
+    </member>
+    <member name="F:Alteruna.SpawnPointer.SpawnPoints"></member>
     <member name="T:Alteruna.SyncedAxis">
       <summary>
              Alternative way of implementing <c>InputSynchronizable</c>.
              </summary>
-    </member>
-    <member name="M:Alteruna.SyncedAxis.#ctor(Alteruna.IInput,System.String)">
-      <summary>
-            Register axis.
-            </summary>
-      <param name="inputManager"></param>
-      <param name="axis"></param>
-    </member>
-    <member name="M:Alteruna.SyncedAxis.#ctor(System.String)">
-      <summary>
-            Set axis without registering.
-            </summary>
-      <param name="axis">Target axis.</param>
     </member>
     <member name="P:Alteruna.SyncedAxis.Axis">
       <summary>
@@ -2359,30 +2303,70 @@
             Raw value of axis.
             </summary>
     </member>
+    <member name="T:Alteruna.SyncedEventBase`1">
+      <summary>
+            Base class for syncronizing events with any type of argument.
+            </summary>
+      <typeparam name="T">Type of the argument that is passed in the event.</typeparam>
+      <remarks>
+            Cannot be used as a compoment but can be inherited to create any type of SyncedEvent.
+            To sync an event with no arguments, <see cref="T:Alteruna.SyncedEvent.SyncedEventVoid">Synced Event &lt;Void&gt;</see>.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.SyncedEventBase`1.AssembleData(Alteruna.Writer,System.Byte)"></member>
+    <member name="M:Alteruna.SyncedEventBase`1.DisassembleData(Alteruna.Reader,System.Byte)"></member>
+    <member name="P:Alteruna.SyncedEventBase`1.HaveBeenInvoked">
+      <summary>
+            True if the event has been invoked previously.
+            </summary>
+    </member>
+    <member name="M:Alteruna.SyncedEventBase`1.Invoke">
+      <summary>
+            Invoke the event with the last used argument.
+            </summary>
+    </member>
+    <member name="M:Alteruna.SyncedEventBase`1.Invoke(`0)">
+      <summary>
+            Invoke the event with the given argument.
+            </summary>
+      <param name="arg">passed object</param>
+    </member>
+    <member name="M:Alteruna.SyncedEventBase`1.InvokeSilent">
+      <summary>
+            Invoke without triggering local event with the last used argument.
+            </summary>
+    </member>
+    <member name="M:Alteruna.SyncedEventBase`1.InvokeSilent(`0)">
+      <summary>
+            Invoke without triggering local event with the given argument.
+            </summary>
+      <param name="arg">passed object</param>
+    </member>
+    <member name="P:Alteruna.SyncedEventBase`1.LastValue">
+      <summary>
+            Last value used in the event.
+            </summary>
+    </member>
+    <member name="F:Alteruna.SyncedEventBase`1.OnEvent">
+      <summary>
+            Event to be invoked.
+            </summary>
+    </member>
+    <member name="M:Alteruna.SyncedEventBase`1.Reset"></member>
+    <member name="F:Alteruna.SyncedEventBase`1.Value">
+      <summary>
+            Last value used in the event.
+            </summary>
+    </member>
+    <member name="M:Alteruna.SyncedEventBase`1.ValueToString">
+      <summary>
+            Get the last used argument as string.
+            </summary>
+    </member>
     <member name="T:Alteruna.SyncedKey">
       <summary>
             Alternative way of implementing <c>InputSynchronizable</c>.
             </summary>
-    </member>
-    <member name="M:Alteruna.SyncedKey.#ctor">
-      <summary>
-            Constructor for default values.
-            </summary>
-    </member>
-    <member name="M:Alteruna.SyncedKey.#ctor(Alteruna.IInput,UnityEngine.KeyCode,Alteruna.SyncedKey.KeyMode)">
-      <summary>
-            Register key and mode.
-            </summary>
-      <param name="inputManager">Target IInput.</param>
-      <param name="key">Target key.</param>
-      <param name="keyMode">Target key mode.</param>
-    </member>
-    <member name="M:Alteruna.SyncedKey.#ctor(UnityEngine.KeyCode,Alteruna.SyncedKey.KeyMode)">
-      <summary>
-            Set key and mode without registering. 
-            </summary>
-      <param name="key">Target key.</param>
-      <param name="keyMode">Target key mode.</param>
     </member>
     <member name="M:Alteruna.SyncedKey.Deregister">
       <summary>
@@ -2625,13 +2609,11 @@
             Synchronise target field.
             </summary>
     </member>
-    <member name="M:Alteruna.Synchronizable.SynchronizableField.#ctor"></member>
     <member name="T:Alteruna.Synchronizable.SynchronizableMethod">
       <summary>
             Synchronise target Method.
             </summary>
     </member>
-    <member name="M:Alteruna.Synchronizable.SynchronizableMethod.#ctor"></member>
     <member name="T:Alteruna.TransformSynchronizable">
       <summary>
             Class <c>TransformSynchronizable</c> defines a component which synchronizes its game objects transform with other clients in the Playroom.
@@ -2641,6 +2623,7 @@
       </remarks>
     </member>
     <member name="M:Alteruna.TransformSynchronizable.AssembleData(Alteruna.Writer,System.Byte)"></member>
+    <member name="M:Alteruna.TransformSynchronizable.Awake"></member>
     <member name="M:Alteruna.TransformSynchronizable.DisassembleData(Alteruna.Reader,System.Byte)"></member>
     <member name="M:Alteruna.TransformSynchronizable.Reset"></member>
     <member name="M:Alteruna.TransformSynchronizable.Start"></member>
@@ -2654,22 +2637,16 @@
       </remarks>
     </member>
     <member name="M:Alteruna.TransformSynchronizable2D.AssembleData(Alteruna.Writer,System.Byte)"></member>
+    <member name="M:Alteruna.TransformSynchronizable2D.Awake"></member>
     <member name="M:Alteruna.TransformSynchronizable2D.DisassembleData(Alteruna.Reader,System.Byte)"></member>
     <member name="M:Alteruna.TransformSynchronizable2D.Reset"></member>
     <member name="M:Alteruna.TransformSynchronizable2D.Start"></member>
-    <member name="M:Alteruna.TransformSynchronizable2D.Teleport(UnityEngine.Vector2)">
-      <summary>
-            Set position of transform and sync it to all clients.
-            </summary>
-      <param name="pos">new position</param>
-    </member>
     <member name="M:Alteruna.TransformSynchronizable2D.Update"></member>
     <member name="T:Alteruna.TransformSynchronizableCommon">
       <summary>
             Common Transform Synchronizable methods.
             </summary>
     </member>
-    <member name="M:Alteruna.TransformSynchronizableCommon.#ctor"></member>
     <member name="M:Alteruna.TransformSynchronizableCommon.AssembleData(Alteruna.Writer,System.Byte)"></member>
     <member name="M:Alteruna.TransformSynchronizableCommon.Awake"></member>
     <member name="M:Alteruna.TransformSynchronizableCommon.CanSync"></member>
@@ -3142,149 +3119,55 @@
             </summary>
     </member>
     <member name="P:Alteruna.UtcTime.SecondsFloat"></member>
-    <member name="T:Alteruna.VoiceSynchronizable">
-      <summary>
-            Synchronizable component for voice chat.
-            </summary>
-      <remarks>
-        <img src="../images/Alteruna.VoiceSynchronizable.png" />
-      </remarks>
-    </member>
-    <member name="M:Alteruna.VoiceSynchronizable.#ctor"></member>
-    <member name="P:Alteruna.VoiceSynchronizable.Activity">
-      <summary>
-            Value between 0 and 1 representing the activity of the microphone.
-            1 means that that the volume is above the silence threshold.
-            0 means that the volume is below the silence threshold and have been for at least SilenceTimeout.
-            </summary>
-    </member>
+    <member name="T:Alteruna.VoiceSynchronizable"></member>
+    <member name="P:Alteruna.VoiceSynchronizable.Activity"></member>
     <member name="M:Alteruna.VoiceSynchronizable.AssembleData(Alteruna.Writer,System.Byte)"></member>
-    <member name="M:Alteruna.VoiceSynchronizable.AvailableInputDevices">
-      <summary>
-            Get the list of available input devices.
-            </summary>
-      <returns>Array of device names.</returns>
-    </member>
-    <member name="M:Alteruna.VoiceSynchronizable.ClearDevice">
-      <summary>
-            Clear the microphone device and stop recording.
-            </summary>
-    </member>
-    <member name="M:Alteruna.VoiceSynchronizable.ClearDeviceLocal">
-      <summary>
-            Clear the microphone device and stop recording.
-            </summary>
-    </member>
-    <member name="P:Alteruna.VoiceSynchronizable.DeviceName">
-      <summary>
-            Name of the input device.
-            </summary>
-    </member>
+    <member name="M:Alteruna.VoiceSynchronizable.AvailableInputDevices"></member>
+    <member name="M:Alteruna.VoiceSynchronizable.ClearDevice"></member>
+    <member name="M:Alteruna.VoiceSynchronizable.ClearDeviceLocal"></member>
+    <member name="P:Alteruna.VoiceSynchronizable.DeviceName"></member>
     <member name="M:Alteruna.VoiceSynchronizable.DisassembleData(Alteruna.Reader,System.Byte)"></member>
-    <member name="P:Alteruna.VoiceSynchronizable.IsActive">
-      <summary>
-            True if the microphone is active and sending data.
-            </summary>
-    </member>
-    <member name="P:Alteruna.VoiceSynchronizable.IsSender">
-      <summary>
-            True when object is possessed by local user and is recording.
-            False when object acts as receiver.
-            </summary>
-    </member>
-    <member name="P:Alteruna.VoiceSynchronizable.LocalInputController">
-      <summary>
-            Get the local input controller.
-            The recording device is set to the default microphone.
-            </summary>
-    </member>
-    <member name="F:Alteruna.VoiceSynchronizable.PackageLossBuffer">
-      <summary>
-            Maximum number of unordered pending packages.
-            When buffer count been meet, a package is considered lost and will be skipped.
-            Will increase RAM usage.
-            </summary>
-    </member>
-    <member name="P:Alteruna.VoiceSynchronizable.PeakVolume">
-      <summary>
-            Highest volume recorded this frame.
-            </summary>
-    </member>
-    <member name="F:Alteruna.VoiceSynchronizable.PlaybackSource">
-      <summary>
-            Source for playback.
-            </summary>
-    </member>
+    <member name="P:Alteruna.VoiceSynchronizable.IsActive"></member>
+    <member name="P:Alteruna.VoiceSynchronizable.IsSender"></member>
+    <member name="P:Alteruna.VoiceSynchronizable.LocalInputController"></member>
+    <member name="F:Alteruna.VoiceSynchronizable.PackageLossBuffer"></member>
+    <member name="P:Alteruna.VoiceSynchronizable.PeakVolume"></member>
+    <member name="F:Alteruna.VoiceSynchronizable.PlaybackSource"></member>
     <member name="M:Alteruna.VoiceSynchronizable.Possessed(System.Boolean,Alteruna.User)"></member>
-    <member name="F:Alteruna.VoiceSynchronizable.SendFrequency">
-      <summary>
-            How often to send data from the buffer.
-            Lower values will decrease latency but increase bandwidth.
-            </summary>
-    </member>
-    <member name="M:Alteruna.VoiceSynchronizable.SetDevice">
-      <summary>
-            Set the default microphone as the recording device.
-            </summary>
-      <returns>False when no device available.</returns>
-    </member>
-    <member name="M:Alteruna.VoiceSynchronizable.SetDevice(System.Int32)">
-      <summary>
-            Set the microphone device by index.
-            </summary>
-      <param name="deviceId">Input device index.</param>
-      <returns>False when no device available.</returns>
-    </member>
-    <member name="M:Alteruna.VoiceSynchronizable.SetDevice(System.String)">
-      <summary>
-            Set the microphone device by name.
-            </summary>
-      <param name="deviceName">Name of input device.</param>
-    </member>
-    <member name="F:Alteruna.VoiceSynchronizable.SilenceCutoff">
-      <summary>
-            Silence threshold.
-            Values bellow this is considered silence.
-            </summary>
-    </member>
-    <member name="F:Alteruna.VoiceSynchronizable.SilenceTimeout">
-      <summary>
-            Time in seconds to record after silence threshold is reached.
-            </summary>
-    </member>
-    <member name="F:Alteruna.VoiceSynchronizable.Volume">
-      <summary>
-            Playback volume.
-            </summary>
-    </member>
-    <member name="T:Alteruna.VoiceSynchronizable.BitDepth">
-      <summary>
-            Bit depth for audio quality.
-            </summary>
-    </member>
-    <member name="T:Alteruna.VoiceSynchronizable.EncryptionType">
-      <summary>
-            Encoding types for data compression.
-            </summary>
-    </member>
-    <member name="F:Alteruna.VoiceSynchronizable.EncryptionType.Bit8">
-      <summary>
-            Encode samples as 8-bit delta.
-            </summary>
-    </member>
-    <member name="F:Alteruna.VoiceSynchronizable.EncryptionType.Bit12">
-      <summary>
-            Encode samples as 12-bit delta.
-            </summary>
-    </member>
-    <member name="F:Alteruna.VoiceSynchronizable.EncryptionType.Bit16">
-      <summary>
-            Full depth resolution.
-            </summary>
-    </member>
+    <member name="F:Alteruna.VoiceSynchronizable.SendFrequency"></member>
+    <member name="M:Alteruna.VoiceSynchronizable.SetDevice"></member>
+    <member name="M:Alteruna.VoiceSynchronizable.SetDevice(System.Int32)"></member>
+    <member name="M:Alteruna.VoiceSynchronizable.SetDevice(System.String)"></member>
+    <member name="F:Alteruna.VoiceSynchronizable.SilenceCutoff"></member>
+    <member name="F:Alteruna.VoiceSynchronizable.SilenceTimeout"></member>
+    <member name="F:Alteruna.VoiceSynchronizable.Volume"></member>
+    <member name="T:Alteruna.VoiceSynchronizable.BitDepth"></member>
+    <member name="T:Alteruna.VoiceSynchronizable.EncryptionType"></member>
     <member name="T:Alteruna.Writer">
       <summary>
             Class <c>Reader</c> is used to read data recieved from another User.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Writer.EndCompress(Alteruna.Trinity.PacketProcessing.CompressionMethod)">
+      <summary>
+            Compresses the data already written to the writer.
+            If StartCompress has not been called, the data will be compressed from the start of the writer.
+            </summary>
+      <param name="method">Compression method used.</param>
+      <returns>Number of bytes saved by compression.</returns>
+    </member>
+    <member name="M:Alteruna.Writer.SerializeAndPackString``1(``0)">
+      <summary>
+            Pack an object into a string that cane later be unpacked using <see cref="M:Alteruna.Reader.DeserializePackedString``1(System.String)" />.
+            </summary>
+      <param name="obj">Given object to pack.</param>
+      <typeparam name="T">Object Type.</typeparam>
+      <returns>Packed string.</returns>
+    </member>
+    <member name="M:Alteruna.Writer.StartCompress">
+      <summary>
+            Sets the current position of the writer as the start of the data to be compressed.
+            Default to the start of the Writer.
             </summary>
     </member>
     <member name="M:Alteruna.Writer.Write(System.Boolean)"></member>
@@ -3298,6 +3181,30 @@
     <member name="M:Alteruna.Writer.Write(System.String)"></member>
     <member name="M:Alteruna.Writer.Write(System.UInt16)"></member>
     <member name="M:Alteruna.Writer.Write(System.UInt32)"></member>
+    <member name="M:Alteruna.Writer.WriteGeneric``1(``0)">
+      <summary>
+            identical to WriteObject
+            </summary>
+    </member>
+    <member name="M:Alteruna.Writer.WriteObject(System.Object)"></member>
+    <member name="M:Alteruna.Writer.WriteObject(System.Object,System.Type)">
+      <summary>
+            Write an object of given type.
+            </summary>
+      <param name="value">object</param>
+      <param name="type">Type may be ether a value type object, implementing IFormatter, or is serializable.</param>
+      <exception cref="T:System.ArgumentNullException">Given object was null</exception>
+      <exception cref="T:System.Runtime.Serialization.SerializationException">Thrown when given object was not serializable.</exception>
+    </member>
+    <member name="M:Alteruna.Writer.WriteObject``1(``0)">
+      <summary>
+            Write an object of given type.
+            </summary>
+      <param name="value">object</param>
+      <typeparam name="T">Type may be ether a value type object, implementing IFormatter, or is serializable.</typeparam>
+      <exception cref="T:System.ArgumentNullException">Given object was null</exception>
+      <exception cref="T:System.Runtime.Serialization.SerializationException">Thrown when given object was not serializable.</exception>
+    </member>
     <member name="T:Alteruna.Configs.AlterunaConfig">
       <summary>
             Configuration for Alteruna.
@@ -3914,6 +3821,12 @@
     <member name="F:Alteruna.Trinity.PersistenceStorage.StorageType.ALL">
       <summary>
             Unspecified storage type.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Trinity.Reliability">
+      <summary>
+            Type <c>Reliability</c> defines modes of reliability
+            for messages sent using Trinity Network Protocol 
             </summary>
     </member>
     <member name="T:Alteruna.Trinity.Exceptions.LicenseException">
