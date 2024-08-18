@@ -459,6 +459,10 @@ MonoBehaviour:
   Reliability: 1
   LocalMethodBehavior: 1
   gameState: 0
+  teamSpawns:
+  - {x: 1850.41, y: 1.683369, z: 2543.646}
+  - {x: 3125.217, y: 3.014191, z: 2268.805}
+  devSpawning: 1
 --- !u!114 &175181118
 MonoBehaviour:
   m_ObjectHideFlags: 0

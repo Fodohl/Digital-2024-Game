@@ -42,7 +42,7 @@ public class OriginalFirstPersonMovement : CommunicationBridge
     [SerializeField] private float slopeCounter;
     private bool setUp = false;
     private bool isSwimming = false;
-    private float waterHeight = -8.3f;
+    private float waterHeight = 4.5f;
 
 
     //basic player set up (cursor and setting rigidbody)
@@ -194,18 +194,22 @@ public class OriginalFirstPersonMovement : CommunicationBridge
     float lastSpeed;
     //this does the groundcheck with a sphere check and runs a coyote time for the jump
     private void GroundCheck(){
-        if (Physics.CheckSphere(groundCheck.position, groundCheckRange, notPlayerMask)){
-            if (isGrounded == false){
-                isGrounded = true;
-                canJump = true;
+        if (!isSwimming){
+            if (Physics.CheckSphere(groundCheck.position, groundCheckRange, notPlayerMask)){
+                if (isGrounded == false){
+                    isGrounded = true;
+                    canJump = true;
+                }
+            } else {
+                if (isGrounded == true){
+                    isGrounded = false;
+                    StartCoroutine(CoyoteTime());
+                }
             }
-        } else {
-            if (isGrounded == true){
-                isGrounded = false;
-                StartCoroutine(CoyoteTime());
-            }
+            lastSpeed = rb.velocity.y;
+        }else{
+            isGrounded=false;
         }
-        lastSpeed = rb.velocity.y;
     }
     //coyote timer (this lets the player jump after going of the edge of a platform)
     private IEnumerator CoyoteTime(){

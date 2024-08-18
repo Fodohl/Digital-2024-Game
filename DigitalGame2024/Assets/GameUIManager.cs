@@ -99,7 +99,7 @@ public class GameUIManager : AttributesSync
     }
     public void SpawnAvatar(){
         if (GameManager.Instance.devSpawning){
-        Multiplayer.SpawnAvatar(new Vector3(2397, 12, 2688));
+        Multiplayer.SpawnAvatar(new Vector3(292, 12, 544));
         }else{
             Multiplayer.SpawnAvatar(GameManager.Instance.teamSpawns[GameManager.Instance.GetCurrentTeam(Multiplayer.GetUser())]);
         }
