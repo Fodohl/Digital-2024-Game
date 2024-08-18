@@ -16,7 +16,9 @@ public class GameManager : AttributesSync
 
     [SynchronizableField] public Dictionary< string, int> kills = new Dictionary<string, int>();
     [SynchronizableField] public Dictionary< string, int> deaths = new Dictionary<string, int>();
-    private List<User>[] teams = new List<User>[] { new List<User>(10), new List<User>(10) };
+    [HideInInspector] public List<User>[] teams = new List<User>[] { new List<User>(10), new List<User>(10) };
+    public Vector3[] teamSpawns = { new Vector3(1850.41f, 1.683369f, 2543.646f), new Vector3(3125.217f, 3.014191f, 2268.805f) };
+    public bool devSpawning = false;
 
     private static GameManager _instance;
     public static GameManager Instance
@@ -133,7 +135,7 @@ public class GameManager : AttributesSync
     private int GetSmallestTeam(){
         return teams[0].Count <= teams[1].Count ? 0 : 1;
     }
-    private int GetCurrentTeam(User user){
+    public int GetCurrentTeam(User user){
         var tempTeam = -1;
         for (int i = 0; i < teams.Length; i++){
             if (teams[i].Contains(user)){

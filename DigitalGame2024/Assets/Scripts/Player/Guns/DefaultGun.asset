@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireRate: 4
   damage: 10
-  range: 100
   magSize: 12
+  reloadTime: 1.2
   gunType: 0

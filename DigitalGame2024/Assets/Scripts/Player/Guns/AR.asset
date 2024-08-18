@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9d6d7182050bfc43b7acda25c5af852, type: 3}
   m_Name: AR
   m_EditorClassIdentifier: 
-  fireRate: 5
+  fireRate: 14
   damage: 14
   magSize: 32
   reloadTime: 4.5

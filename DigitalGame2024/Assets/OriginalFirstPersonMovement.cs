@@ -124,7 +124,12 @@ public class OriginalFirstPersonMovement : CommunicationBridge
     private void Movement(){
         moveDirection = transform.TransformDirection(new Vector3(xInput, 0 , yInput)).normalized * speed;
         if (SlopeDetection()){
+            Vector3 temp = Vector3.Cross(slopeHit.normal, Vector3.down);
+            var groundSlopeDir = Vector3.Cross(temp, slopeHit.normal);
+            var groundSlopeAngle = Vector3.Angle(slopeHit.normal, Vector3.up);
+            if (groundSlopeAngle < 45){
             moveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
+            }
         }
         if (isGrounded && !isSliding){
             if (xInput != 0 || yInput != 0){

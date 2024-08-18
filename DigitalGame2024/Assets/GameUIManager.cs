@@ -69,27 +69,40 @@ public class GameUIManager : AttributesSync
         }
     }
     private void UpdateScoreBoard(){
+        var team1 = 0;
+        var team2 = 0;
         for (int i = 0; i < scoreObjects.Count; i++)
         {
             Destroy(scoreObjects[i]); 
         }
-        foreach (var user in Multiplayer.GetUsers())
+        var users = Multiplayer.GetUsers();
+        for (int i = 0; i < users.Count; i++)
         {
-        //     for (int j = 0; j < scoreObjects.Count; j++)
-        //     {
-        //         if (Multiplayer.GetUser(scoreObjects[j].GetComponent<ScorePrefab>().name.text) == Multiplayer.GetUser(i)){
-            var obj = Instantiate(scorePrefab, scoreSection.transform);
-            obj.GetComponent<RectTransform>().localPosition = new Vector3(0, -((user.Index*50) - 175));
-            scoreObjects.Add(obj);
-            obj.GetComponent<ScorePrefab>().name.text = user.Name;
-            obj.GetComponent<ScorePrefab>().kills.text = GameManager.Instance.kills[user].ToString();
-            obj.GetComponent<ScorePrefab>().deaths.text = GameManager.Instance.deaths[user].ToString();
-        //         }
-        //     }
+            if(GameManager.Instance.teams[0].Contains(users[i])){
+                var obj = Instantiate(scorePrefab, scoreSection.transform);
+                obj.GetComponent<RectTransform>().localPosition = new Vector3(0, -((team1*50) - 275));
+                scoreObjects.Add(obj);
+                obj.GetComponent<ScorePrefab>().name.text = users[i].Name;
+                obj.GetComponent<ScorePrefab>().kills.text = GameManager.Instance.kills[users[i]].ToString();
+                obj.GetComponent<ScorePrefab>().deaths.text = GameManager.Instance.deaths[users[i]].ToString();
+                team1++;
+            }else{
+                var obj = Instantiate(scorePrefab, scoreSection.transform);
+                obj.GetComponent<RectTransform>().localPosition = new Vector3(0, -((team2*50) + 25));
+                scoreObjects.Add(obj);
+                obj.GetComponent<ScorePrefab>().name.text = users[i].Name;
+                obj.GetComponent<ScorePrefab>().kills.text = GameManager.Instance.kills[users[i]].ToString();
+                obj.GetComponent<ScorePrefab>().deaths.text = GameManager.Instance.deaths[users[i]].ToString();
+                team2++;
+            }
         }
     }
     public void SpawnAvatar(){
+        if (GameManager.Instance.devSpawning){
         Multiplayer.SpawnAvatar(new Vector3(2397, 12, 2688));
+        }else{
+            Multiplayer.SpawnAvatar(GameManager.Instance.teamSpawns[GameManager.Instance.GetCurrentTeam(Multiplayer.GetUser())]);
+        }
         GameManager.Instance.gameState = GameManager.GameState.Playing;
         UpdateUI();
     }
