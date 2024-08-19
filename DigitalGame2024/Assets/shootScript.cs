@@ -7,6 +7,7 @@ using UnityEngine;
 public class shootScript : CommunicationBridge
 {
     [SerializeField] private CustomGun[] allGuns;
+    [SerializeField] private GameObject[] gunGameObjects;
     [SerializeField] private List<int> ammoInEachGun = new List<int>();
     private CustomGun currentGun;
     [SerializeField] private Transform parent;
@@ -29,9 +30,13 @@ public class shootScript : CommunicationBridge
     private void Update()
     {
         if (currentGun.gunType == CustomGun.fireType.singleFire){
-            if (Input.GetMouseButtonDown(0) && canShoot && currentAmmo > 0)
+            if (Input.GetMouseButtonDown(0) && canShoot && currentAmmo > 0 && transform.parent.GetComponent<Alteruna.Avatar>().IsMe)
             {
-                transform.GetChild(0).GetChild(0).GetComponent<Animator>().SetTrigger("Shoot");
+                for (int i = 0; i < transform.GetChild(0).childCount; i++){
+                    if (transform.GetChild(0).GetChild(i).gameObject.activeSelf){
+                        transform.GetChild(0).GetChild(i).GetComponent<Animator>().SetTrigger("Shoot");
+                    }
+                }
                 Ray ray = new Ray(transform.position, transform.forward);
                 RaycastHit hit;
                 if (
@@ -58,14 +63,17 @@ public class shootScript : CommunicationBridge
                     holdFlash = Instantiate(muzzelFlash[randomNumberForMuzzelFlash], muzzelSpawn.transform.position /*- muzzelPosition*/, muzzelSpawn.transform.rotation * Quaternion.Euler(0,0,90) ) as GameObject;
                     holdFlash.transform.parent = muzzelSpawn.transform;
                 currentAmmo--;
-                print(currentAmmo);
                 canShoot = false;
                 StartCoroutine(shootTimer(currentGun.fireRate));
             }
         }else{
-            if (Input.GetMouseButton(0) && canShoot && currentAmmo > 0)
+            if (Input.GetMouseButton(0) && canShoot && currentAmmo > 0 && transform.parent.GetComponent<Alteruna.Avatar>().IsMe)
             {
-                transform.GetChild(0).GetChild(0).GetComponent<Animator>().SetTrigger("Shoot");
+                for (int i = 0; i < transform.GetChild(0).childCount; i++){
+                    if (transform.GetChild(0).GetChild(i).gameObject.activeSelf){
+                        transform.GetChild(0).GetChild(i).GetComponent<Animator>().SetTrigger("Shoot");
+                    }
+                }
                 Ray ray = new Ray(transform.position, transform.forward);
                 RaycastHit hit;
                 if (
@@ -92,15 +100,19 @@ public class shootScript : CommunicationBridge
                     holdFlash = Instantiate(muzzelFlash[randomNumberForMuzzelFlash], muzzelSpawn.transform.position /*- muzzelPosition*/, muzzelSpawn.transform.rotation * Quaternion.Euler(0,0,90) ) as GameObject;
                     holdFlash.transform.parent = muzzelSpawn.transform;
                 currentAmmo--;
-                print(currentAmmo);
                 canShoot = false;
                 StartCoroutine(shootTimer(currentGun.fireRate));
             }
         }
-        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < currentGun.magSize){
+        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < currentGun.magSize && transform.parent.GetComponent<Alteruna.Avatar>().IsMe){
             canShoot = false;
-            transform.GetChild(0).GetChild(0).GetComponent<Animator>().SetTrigger("Reload");
-            StartCoroutine(reloadTimer(currentGun.reloadTime));
+            for (int i = 0; i < transform.GetChild(0).childCount; i++)
+            {
+                if (transform.GetChild(0).GetChild(i).gameObject.activeSelf){
+                    transform.GetChild(0).GetChild(i).GetComponent<Animator>().SetTrigger("Reload");
+                    StartCoroutine(reloadTimer(currentGun.reloadTime));
+                }
+            }
         }
         if (Input.GetKeyDown(KeyCode.Alpha1)){
             SaveAmmo(0);
