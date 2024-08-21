@@ -1,0 +1,1 @@
+using UnityEngine; public class ActiveGun : MonoBehaviour { public Transform muzzlePoint; }

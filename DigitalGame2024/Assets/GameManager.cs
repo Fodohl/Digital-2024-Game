@@ -17,7 +17,7 @@ public class GameManager : AttributesSync
     [SynchronizableField] public Dictionary< string, int> kills = new Dictionary<string, int>();
     [SynchronizableField] public Dictionary< string, int> deaths = new Dictionary<string, int>();
     [HideInInspector] public List<User>[] teams = new List<User>[] { new List<User>(10), new List<User>(10) };
-    public Vector3[] teamSpawns = { new Vector3(1850.41f, 1.683369f, 2543.646f), new Vector3(3125.217f, 3.014191f, 2268.805f) };
+    public Vector3[] teamSpawns = { new Vector3(100, 14, 550), new Vector3(1370, 15, 276) };
     public bool devSpawning = false;
 
     private static GameManager _instance;
@@ -60,6 +60,13 @@ public class GameManager : AttributesSync
             GameUIManager.Instance.UpdateUI();
         }
         if(Input.GetKeyUp(KeyCode.Tab)){
+            gameState = GameState.Playing;
+            GameUIManager.Instance.UpdateUI();
+        }
+        if(Input.GetKeyDown(KeyCode.Escape) && gameState != GameState.Paused){
+            gameState = GameState.Paused;
+            GameUIManager.Instance.UpdateUI();
+        }else if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Paused){
             gameState = GameState.Playing;
             GameUIManager.Instance.UpdateUI();
         }

@@ -12,11 +12,15 @@ public class MainMenuManager : AttributesSync
     private float timer = 0;
     public GameObject connectingScreen;
     private void Awake(){
-        multiplayer.OnConnected.AddListener(OnConnected);
+        if (multiplayer.IsConnected){
+            connectingScreen.SetActive(false);
+        } else {
+            multiplayer.OnConnected.AddListener(OnConnected);
+        }
     } 
     public void Join(){
         if (Multiplayer.IsConnected){
-            Multiplayer.JoinRoom(room[0]);
+            Multiplayer.JoinFirstAvailable();
             Multiplayer.LoadScene("Game");
         }
     }
@@ -33,6 +37,7 @@ public class MainMenuManager : AttributesSync
         timer += Time.deltaTime;
         if (timer > 1){
             if(Multiplayer.IsConnected){
+                connectingScreen.SetActive(false);
                 room = Multiplayer.AvailableRooms;
             }
             timer = 0;

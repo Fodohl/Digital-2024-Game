@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using Alteruna;
 using System;
+using System.Collections.Generic;
 
 public class OriginalFirstPersonMovement : CommunicationBridge
 {
@@ -43,6 +44,7 @@ public class OriginalFirstPersonMovement : CommunicationBridge
     private bool setUp = false;
     private bool isSwimming = false;
     private float waterHeight = 4.5f;
+    private GameObject[] indicators;
 
 
     //basic player set up (cursor and setting rigidbody)
@@ -50,6 +52,9 @@ public class OriginalFirstPersonMovement : CommunicationBridge
     {
         rb = GetComponent<Rigidbody>();
         avatar = GetComponent<Alteruna.Avatar>();
+        if (avatar.IsMe){
+            indicators = GameObject.FindGameObjectsWithTag("PlayerIndicator");
+        }
     }
 
     private void Update()
@@ -87,6 +92,14 @@ public class OriginalFirstPersonMovement : CommunicationBridge
             PlayerInput();
         }
         GroundCheck();
+        if (avatar.IsMe){
+            indicators = GameObject.FindGameObjectsWithTag("PlayerIndicator");
+            foreach (var dot in indicators)
+            {
+                dot.transform.localPosition = new Vector3(dot.transform.localPosition.x, Vector3.Distance(transform.position, dot.transform.position) * 0.5f, dot.transform.localPosition.z);
+                dot.transform.localScale = Vector3.one * Vector3.Distance(transform.position, dot.transform.position) * 0.25f ;
+            }
+        }
     }
     RaycastHit slopeHit;
     private bool SlopeDetection(){

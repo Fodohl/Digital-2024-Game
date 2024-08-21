@@ -1,145 +1,150 @@
 using System.Collections;
 using System.Collections.Generic;
 using Alteruna;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class shootScript : CommunicationBridge
+public class shootScript : AttributesSync
 {
     [SerializeField] private CustomGun[] allGuns;
-    [SerializeField] private GameObject[] gunGameObjects;
+    [SerializeField] private ActiveGun[] gunGameObjects;
     [SerializeField] private List<int> ammoInEachGun = new List<int>();
-    private CustomGun currentGun;
     [SerializeField] private Transform parent;
     [SerializeField] private GameObject bloodSplatterEffect;
-    [SerializeField] private GameObject bullet;
-    [SerializeField] private Transform bulletSpawnPlace;
+    [SerializeField] private GameObject[] muzzleFlash;
+    [SerializeField] private GameObject BulletFX;
+
+    private CustomGun currentGun;
     private bool canShoot = true;
     private GameObject holdFlash;
     private int currentAmmo;
-    [SerializeField] private GameObject[] muzzelFlash;
-    [SerializeField] private GameObject muzzelSpawn;
+
     private void Awake(){
         currentGun = allGuns[0];
         currentAmmo = currentGun.magSize;
-        for (int i = 0; i < allGuns.Length; i++)
-        {
+        for (int i = 0; i < allGuns.Length; i++){
             ammoInEachGun[i] = allGuns[i].magSize;
         }
     }
-    private void Update()
-    {
-        if (currentGun.gunType == CustomGun.fireType.singleFire){
-            if (Input.GetMouseButtonDown(0) && canShoot && currentAmmo > 0 && transform.parent.GetComponent<Alteruna.Avatar>().IsMe)
-            {
-                for (int i = 0; i < transform.GetChild(0).childCount; i++){
-                    if (transform.GetChild(0).GetChild(i).gameObject.activeSelf){
-                        transform.GetChild(0).GetChild(i).GetComponent<Animator>().SetTrigger("Shoot");
-                    }
-                }
-                Ray ray = new Ray(transform.position, transform.forward);
-                RaycastHit hit;
-                if (
-                    Physics.Raycast(transform.position, transform.forward, out hit)
-                    && parent.GetComponent<Alteruna.Avatar>().IsMe
-                )
-                {
-                    if (
-                        hit.transform.CompareTag("Player")
-                        && hit.transform.gameObject != parent.gameObject
-                    )
-                    {
-                        if (GameManager.Instance.GetCurrentTeam(hit.transform.gameObject.GetComponent<Alteruna.Avatar>().Owner) != GameManager.Instance.GetCurrentTeam(Multiplayer.GetUser())){
-                            hit.transform.gameObject.GetComponent<Health>().TakeHealth(currentGun.damage, parent.gameObject.GetComponent<Alteruna.Avatar>().Possessor);
-                            Instantiate(bloodSplatterEffect, hit.point, Quaternion.identity);
-                        }
-                    }
-                }
-                int randomNumberForMuzzelFlash = Random.Range(0,5);
-                    if (bullet){
-                        GameObject x = Instantiate(bullet, bulletSpawnPlace.transform.position, bulletSpawnPlace.transform.rotation);
-                        x.transform.LookAt(hit.point);
-                    }
-                    holdFlash = Instantiate(muzzelFlash[randomNumberForMuzzelFlash], muzzelSpawn.transform.position /*- muzzelPosition*/, muzzelSpawn.transform.rotation * Quaternion.Euler(0,0,90) ) as GameObject;
-                    holdFlash.transform.parent = muzzelSpawn.transform;
-                currentAmmo--;
-                canShoot = false;
-                StartCoroutine(shootTimer(currentGun.fireRate));
-            }
-        }else{
-            if (Input.GetMouseButton(0) && canShoot && currentAmmo > 0 && transform.parent.GetComponent<Alteruna.Avatar>().IsMe)
-            {
-                for (int i = 0; i < transform.GetChild(0).childCount; i++){
-                    if (transform.GetChild(0).GetChild(i).gameObject.activeSelf){
-                        transform.GetChild(0).GetChild(i).GetComponent<Animator>().SetTrigger("Shoot");
-                    }
-                }
-                Ray ray = new Ray(transform.position, transform.forward);
-                RaycastHit hit;
-                if (
-                    Physics.Raycast(transform.position, transform.forward, out hit)
-                    && parent.GetComponent<Alteruna.Avatar>().IsMe
-                )
-                {
-                    if (
-                        hit.transform.CompareTag("Player")
-                        && hit.transform.gameObject != parent.gameObject
-                    )
-                    {
-                        if (GameManager.Instance.GetCurrentTeam(hit.transform.gameObject.GetComponent<Alteruna.Avatar>().Owner) != GameManager.Instance.GetCurrentTeam(Multiplayer.GetUser())){
-                            hit.transform.gameObject.GetComponent<Health>().TakeHealth(currentGun.damage, parent.gameObject.GetComponent<Alteruna.Avatar>().Possessor);
-                            Instantiate(bloodSplatterEffect, hit.point, Quaternion.identity);
-                        }
-                    }
-                }
-                int randomNumberForMuzzelFlash = Random.Range(0,5);
-                    if (bullet){
-                        GameObject x = Instantiate(bullet, bulletSpawnPlace.transform.position, bulletSpawnPlace.transform.rotation);
-                        x.transform.LookAt(hit.point);
-                    }
-                    holdFlash = Instantiate(muzzelFlash[randomNumberForMuzzelFlash], muzzelSpawn.transform.position /*- muzzelPosition*/, muzzelSpawn.transform.rotation * Quaternion.Euler(0,0,90) ) as GameObject;
-                    holdFlash.transform.parent = muzzelSpawn.transform;
-                currentAmmo--;
-                canShoot = false;
-                StartCoroutine(shootTimer(currentGun.fireRate));
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < currentGun.magSize && transform.parent.GetComponent<Alteruna.Avatar>().IsMe){
-            canShoot = false;
-            for (int i = 0; i < transform.GetChild(0).childCount; i++)
-            {
-                if (transform.GetChild(0).GetChild(i).gameObject.activeSelf){
-                    transform.GetChild(0).GetChild(i).GetComponent<Animator>().SetTrigger("Reload");
-                    StartCoroutine(reloadTimer(currentGun.reloadTime));
-                }
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha1)){
-            SaveAmmo(0);
-        }else if (Input.GetKeyDown(KeyCode.Alpha2)){
-            SaveAmmo(1);
+
+    private void Update(){
+        if (transform.parent.GetComponent<Alteruna.Avatar>().IsMe){
+            HandleShooting();
+            HandleReloading();
+            HandleWeaponSwitch();
         }
     }
-    private void SaveAmmo(int newGun){
-        int lastGun = -1;
-        for (int i = 0; i < allGuns.Length; i++)
-        {
-            if (currentGun == allGuns[i]){
-                lastGun = i;
+
+    private void HandleShooting(){
+        if ((currentGun.gunType == CustomGun.fireType.singleFire && Input.GetMouseButtonDown(0)) ||
+            (currentGun.gunType != CustomGun.fireType.singleFire && Input.GetMouseButton(0))){
+            
+            if (canShoot && currentAmmo > 0){
+                BroadcastRemoteMethod(nameof(PlayShootAnimation));
+                BroadcastRemoteMethod(nameof(ShowMuzzleFlash));
+                PerformRaycast();
+                currentAmmo--;
+                canShoot = false;
+                StartCoroutine(ShootTimer(currentGun.fireRate));
             }
         }
-        ammoInEachGun[lastGun] = currentAmmo;
+    }
+
+    private void HandleReloading(){
+        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < currentGun.magSize){
+            canShoot = false;
+            BroadcastRemoteMethod(nameof(PlayReloadAnimation));
+            StartCoroutine(ReloadTimer(currentGun.reloadTime));
+        }
+    }
+
+    private void HandleWeaponSwitch(){
+        var input = GetNumericKeyInput();
+        if (input > 0 && input - 1 < allGuns.Length){
+            SaveAmmo(input-1);
+            BroadcastRemoteMethod(nameof(VisableWeaponSwitch), input-1);
+        }
+    }
+    [SynchronizableMethod]
+    private void VisableWeaponSwitch(int newGun){
+        foreach (var gun in gunGameObjects)
+        {
+            gun.gameObject.SetActive(false);
+        }
+        gunGameObjects[newGun].gameObject.SetActive(true);
+    }
+    
+    [SynchronizableMethod]
+    private void PlayShootAnimation(){
+        for (int i = 0; i < transform.GetChild(0).childCount; i++){
+            var child = transform.GetChild(0).GetChild(i);
+            if (child.gameObject.activeSelf){
+                child.GetComponent<Animator>().SetTrigger("Shoot");
+            }
+        }
+    }
+
+    private void PerformRaycast(){
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit)){
+            if (hit.transform.CompareTag("Player") && hit.transform.gameObject != parent.gameObject){
+                var targetAvatar = hit.transform.gameObject.GetComponent<Alteruna.Avatar>();
+                if (GameManager.Instance.GetCurrentTeam(targetAvatar.Owner) != GameManager.Instance.GetCurrentTeam(Multiplayer.GetUser())){
+                    hit.transform.gameObject.GetComponent<Health>().TakeHealth(currentGun.damage, parent.gameObject.GetComponent<Alteruna.Avatar>().Possessor);
+                    Instantiate(bloodSplatterEffect, hit.point, Quaternion.identity);
+                }
+            }
+        }
+    }
+
+    [SynchronizableMethod]
+    private void ShowMuzzleFlash(){
+        var muzzleSpawn = gunGameObjects[System.Array.IndexOf(allGuns, currentGun)].muzzlePoint;
+        holdFlash = Instantiate(muzzleFlash[Random.Range(0, muzzleFlash.Length)], muzzleSpawn.position, muzzleSpawn.transform.rotation * Quaternion.Euler(0, 0, 90));
+        holdFlash.transform.parent = muzzleSpawn.transform;
+        var bullet = Instantiate(BulletFX, muzzleSpawn.position, Quaternion.identity);
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit)){
+            bullet.transform.LookAt(hit.point);
+        }else{
+            bullet.transform.rotation = muzzleSpawn.rotation;
+        }
+    }
+
+    [SynchronizableMethod]
+    private void PlayReloadAnimation(){
+        for (int i = 0; i < transform.GetChild(0).childCount; i++){
+            var child = transform.GetChild(0).GetChild(i);
+            if (child.gameObject.activeSelf){
+                child.GetComponent<Animator>().SetTrigger("Reload");
+            }
+        }
+    }
+
+    private void SaveAmmo(int newGun){
+        ammoInEachGun[System.Array.IndexOf(allGuns, currentGun)] = currentAmmo;
         currentGun = allGuns[newGun];
         currentAmmo = ammoInEachGun[newGun];
     }
-    private IEnumerator shootTimer(float fireRate){
-        yield return new WaitForSeconds(1/fireRate);
+
+    private IEnumerator ShootTimer(float fireRate){
+        yield return new WaitForSeconds(1 / fireRate);
         canShoot = true;
     }
-    private IEnumerator reloadTimer(float reloadTime){
+
+    private IEnumerator ReloadTimer(float reloadTime){
         yield return new WaitForSeconds(reloadTime);
         currentAmmo = currentGun.magSize;
         canShoot = true;
-        print(currentAmmo);
+    }
+
+    private int GetNumericKeyInput()
+    {
+        for (int i = 0; i <= 9; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha0 + i))
+            {
+                print(i);
+                return i;
+            }
+        }
+        return -1;
     }
 }

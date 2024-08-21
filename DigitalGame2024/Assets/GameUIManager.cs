@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Alteruna;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameUIManager : AttributesSync
 {
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private GameObject[] UiPanels;
-    [SerializeField] private GameObject spawn;
     [SerializeField] private GameObject scorePrefab;
     [SerializeField] private GameObject scoreSection;
     private List<GameObject> scoreObjects = new List<GameObject>();
@@ -105,5 +103,16 @@ public class GameUIManager : AttributesSync
         }
         GameManager.Instance.gameState = GameManager.GameState.Playing;
         UpdateUI();
+    }
+    public void ResumeGame(){
+        GameManager.Instance.gameState = GameManager.GameState.Playing;
+        UpdateUI();
+    }
+    public void LeaveRoom(){
+        Multiplayer.CurrentRoom.Leave();
+        Multiplayer.LoadScene("Menu");
+    }
+    public void LeaveGame(){
+        Application.Quit();
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7059146044052716465}
   - component: {fileID: 4106640951053535480}
   - component: {fileID: 4237653127512690634}
-  - component: {fileID: 5550408579477278586}
+  - component: {fileID: 5434921958060711964}
   m_Layer: 0
   m_Name: BulletFX
   m_TagString: Untagged
@@ -117,7 +117,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.1
+      scalar: 0.15
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -170,7 +170,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1000
+      scalar: 50
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -224,7 +224,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.8238035, b: 0, a: 1}
+      maxColor: {r: 1, g: 0.92175364, b: 0.5566037, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -288,7 +288,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.05
+      scalar: 0.1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4890,7 +4890,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &5550408579477278586
+--- !u!114 &5434921958060711964
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4899,7 +4899,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5416920202388465431}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b570b601ee917644ca00f3f9fcdcd47f, type: 3}
+  m_Script: {fileID: 11500000, guid: 88cbdc3c7f2ab6c44ae6ed7fc67e83b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToDestroy: 3
+  timeToDestroy: 0.4

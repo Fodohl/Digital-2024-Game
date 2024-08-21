@@ -18,7 +18,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.253
+    m_Value: 0.262
   response:
     m_OverrideState: 1
     m_Value: 0.804
@@ -43,9 +43,9 @@ MonoBehaviour:
     m_Value: 0.23
   contrast:
     m_OverrideState: 1
-    m_Value: 32.01
+    m_Value: 38
   colorFilter:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {r: 1, g: 0.9503438, b: 0.8207547, a: 1}
   hueShift:
     m_OverrideState: 0
@@ -183,7 +183,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.216
+    m_Value: 0.255
   smoothness:
     m_OverrideState: 1
     m_Value: 0.4
