@@ -832,7 +832,7 @@ MonoBehaviour:
   groundCheckRange: 0.3
   notPlayerMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 4294967295
   LookSens: 3
   speed: 20
   jumpHeight: 10

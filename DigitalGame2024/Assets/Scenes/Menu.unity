@@ -1750,7 +1750,7 @@ MonoBehaviour:
   teamSpawns:
   - {x: 100, y: 15, z: 550}
   - {x: 1370, y: 15, z: 276}
-  devSpawning: 0
+  devSpawning: 1
 --- !u!114 &175181118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4824,7 +4824,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 1, g: 0, b: 0, a: 1}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
