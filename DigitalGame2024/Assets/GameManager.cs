@@ -1,8 +1,7 @@
-using System;
-using TMPro;
 using UnityEngine;
 using Alteruna;
 using System.Collections.Generic;
+using System.Collections;
 
 public class GameManager : AttributesSync
 {
@@ -39,6 +38,7 @@ public class GameManager : AttributesSync
     }
     private void Awake()
     {
+        gameState = GameState.StartMenu;
         if (_instance == null)
         {
             _instance = this;
@@ -63,10 +63,10 @@ public class GameManager : AttributesSync
             gameState = GameState.Playing;
             GameUIManager.Instance.UpdateUI();
         }
-        if(Input.GetKeyDown(KeyCode.Escape) && gameState != GameState.Paused){
+        if(Input.GetKeyDown(KeyCode.Escape) && gameState != GameState.Paused && gameState != GameState.StartMenu){
             gameState = GameState.Paused;
             GameUIManager.Instance.UpdateUI();
-        }else if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Paused){
+        }else if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Paused && gameState != GameState.StartMenu){
             gameState = GameState.Playing;
             GameUIManager.Instance.UpdateUI();
         }
@@ -101,6 +101,10 @@ public class GameManager : AttributesSync
             teams[GetSmallestTeam()].Add(user);
         }
     }
+    public void OnOtherUserLeft(Multiplayer multiplayer, User user){
+        teams[GetCurrentTeam(user)].RemoveAt(user);
+
+    }
     public void OnRoomJoined(Multiplayer multiplayer, Room room, User user){
         if(!kills.ContainsKey(user.Name))
         {
@@ -127,6 +131,7 @@ public class GameManager : AttributesSync
         if (avatar.IsMe){
             gameState = GameState.StartMenu;
             GameUIManager.Instance.UpdateUI();
+            StartCoroutine(SpawnAfterSeconds(3));
         }
         Destroy(avatar.gameObject);
     }
@@ -150,5 +155,9 @@ public class GameManager : AttributesSync
             }
         }
         return tempTeam;
+    }
+    public IEnumerator SpawnAfterSeconds(float seconds){
+        yield return new WaitForSeconds(seconds);
+        GameUIManager.Instance.SpawnAvatar();
     }
 }

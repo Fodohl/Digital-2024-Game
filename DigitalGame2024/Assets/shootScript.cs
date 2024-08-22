@@ -35,25 +35,29 @@ public class shootScript : AttributesSync
     }
 
     private void HandleShooting(){
-        if ((currentGun.gunType == CustomGun.fireType.singleFire && Input.GetMouseButtonDown(0)) ||
-            (currentGun.gunType != CustomGun.fireType.singleFire && Input.GetMouseButton(0))){
-            
-            if (canShoot && currentAmmo > 0){
-                BroadcastRemoteMethod(nameof(PlayShootAnimation));
-                BroadcastRemoteMethod(nameof(ShowMuzzleFlash));
-                PerformRaycast();
-                currentAmmo--;
-                canShoot = false;
-                StartCoroutine(ShootTimer(currentGun.fireRate));
+        if (GameManager.Instance.gameState == GameManager.GameState.Playing || GameManager.Instance.gameState == GameManager.GameState.ScoreBoard){
+            if ((currentGun.gunType == CustomGun.fireType.singleFire && Input.GetMouseButtonDown(0)) ||
+                (currentGun.gunType != CustomGun.fireType.singleFire && Input.GetMouseButton(0))){
+                
+                if (canShoot && currentAmmo > 0){
+                    BroadcastRemoteMethod(nameof(PlayShootAnimation));
+                    BroadcastRemoteMethod(nameof(ShowMuzzleFlash));
+                    PerformRaycast();
+                    currentAmmo--;
+                    canShoot = false;
+                    StartCoroutine(ShootTimer(currentGun.fireRate));
+                }
             }
         }
     }
 
     private void HandleReloading(){
-        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < currentGun.magSize){
-            canShoot = false;
-            BroadcastRemoteMethod(nameof(PlayReloadAnimation));
-            StartCoroutine(ReloadTimer(currentGun.reloadTime));
+        if (GameManager.Instance.gameState == GameManager.GameState.Playing || GameManager.Instance.gameState == GameManager.GameState.ScoreBoard){
+            if (Input.GetKeyDown(KeyCode.R) && currentAmmo < currentGun.magSize){
+                canShoot = false;
+                BroadcastRemoteMethod(nameof(PlayReloadAnimation));
+                StartCoroutine(ReloadTimer(currentGun.reloadTime));
+            }
         }
     }
 
@@ -137,14 +141,18 @@ public class shootScript : AttributesSync
 
     private int GetNumericKeyInput()
     {
-        for (int i = 0; i <= 9; i++)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha0 + i))
+        if (GameManager.Instance.gameState == GameManager.GameState.Playing || GameManager.Instance.gameState == GameManager.GameState.ScoreBoard){
+            for (int i = 0; i <= 9; i++)
             {
-                print(i);
-                return i;
+                if (Input.GetKeyDown(KeyCode.Alpha0 + i))
+                {
+                    print(i);
+                    return i;
+                }
             }
+            return -1;
+        } else{
+            return -1;
         }
-        return -1;
     }
 }

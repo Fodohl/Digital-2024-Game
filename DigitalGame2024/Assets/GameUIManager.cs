@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Alteruna;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameUIManager : AttributesSync
 {
@@ -11,6 +12,13 @@ public class GameUIManager : AttributesSync
     [SerializeField] private GameObject scorePrefab;
     [SerializeField] private GameObject scoreSection;
     private List<GameObject> scoreObjects = new List<GameObject>();
+    [SerializeField] private Color notAvaliableButtonColor;
+    [SerializeField] private Color notAvaliableTextColor;
+    [SerializeField] private Color avaliableButtonColor;
+    [SerializeField] private Color avaliableTextColor;
+    [SerializeField] private TextMeshProUGUI startButtonText;
+    [SerializeField] private GameObject gameStartNotification;
+    [SynchronizableField] private bool gameHasStarted;
     private static GameUIManager _instance;
     public static GameUIManager Instance
     {
@@ -37,6 +45,24 @@ public class GameUIManager : AttributesSync
         else if (_instance != this)
         {
             Destroy(gameObject);
+        }
+    }
+    private void Update(){
+        if (GameObject.FindAnyObjectByType<Alteruna.Avatar>() && GameManager.Instance.gameState == GameManager.GameState.StartMenu){
+            StartCoroutine(SpawnAvatar());
+        }
+        if (!Multiplayer.GetUser().IsHost && startButtonText.text != "Only the host can start the game"){
+            startButtonText.text = "Only the host can start the game";
+            startButtonText.color = notAvaliableTextColor;
+            startButtonText.transform.parent.GetComponent<Image>().color = notAvaliableButtonColor;
+            startButtonText.fontSize = 40;
+            startButtonText.transform.parent.GetComponent<Button>().interactable = false;
+        }else if (Multiplayer.GetUser().IsHost && startButtonText.text != "Start Game"){
+            startButtonText.text = "Start Game";
+            startButtonText.color = avaliableTextColor;
+            startButtonText.transform.parent.GetComponent<Image>().color = avaliableButtonColor;
+            startButtonText.fontSize = 50;
+            startButtonText.transform.parent.GetComponent<Button>().interactable = true;
         }
     }
     public void UpdateUI(){
@@ -95,14 +121,22 @@ public class GameUIManager : AttributesSync
             }
         }
     }
-    public void SpawnAvatar(){
+    public IEnumerator SpawnAvatar(){
+        GameManager.Instance.gameState = GameManager.GameState.Playing;
+        yield return new WaitForSeconds(3);
         if (GameManager.Instance.devSpawning){
-        Multiplayer.SpawnAvatar(new Vector3(292, 12, 544));
+            Multiplayer.SpawnAvatar(new Vector3(292, 12, 544));
         }else{
             Multiplayer.SpawnAvatar(GameManager.Instance.teamSpawns[GameManager.Instance.GetCurrentTeam(Multiplayer.GetUser())]);
         }
-        GameManager.Instance.gameState = GameManager.GameState.Playing;
         UpdateUI();
+    }
+    public void StartGame(){
+        BroadcastRemoteMethod(nameof(StartGameIntermediate));
+    }
+    [SynchronizableMethod]
+    private void StartGameIntermediate(){
+        StartCoroutine(GameStartCountDown());
     }
     public void ResumeGame(){
         GameManager.Instance.gameState = GameManager.GameState.Playing;
@@ -114,5 +148,16 @@ public class GameUIManager : AttributesSync
     }
     public void LeaveGame(){
         Application.Quit();
+    }
+    private IEnumerator GameStartCountDown(){
+        gameStartNotification.SetActive(true);
+        if (GameManager.Instance.devSpawning){
+            yield return new WaitForSeconds(0);
+        }else{
+            yield return new WaitForSeconds(5);
+        }
+        gameStartNotification.SetActive(false);
+        StartCoroutine(SpawnAvatar());
+        gameHasStarted = true;
     }
 }

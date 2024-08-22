@@ -3,15 +3,18 @@ using Alteruna;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
+using Cinemachine;
 
 public class MainMenuManager : AttributesSync
 {
     List<Room> room = new List<Room>();
-    [SerializeField] private TMP_InputField inputField;
     public Multiplayer multiplayer;
     private float timer = 0;
     public GameObject connectingScreen;
+    [SerializeField] private CinemachineVirtualCamera[] views;
+    [SerializeField] private TMP_InputField nameField;
     private void Awake(){
+        connectingScreen.SetActive(true);
         if (multiplayer.IsConnected){
             connectingScreen.SetActive(false);
         } else {
@@ -41,6 +44,20 @@ public class MainMenuManager : AttributesSync
                 room = Multiplayer.AvailableRooms;
             }
             timer = 0;
+        }
+    }
+    public void ExitGame(){
+        Application.Quit();
+    }
+    public void OpenSettings(){
+        views[0].Priority = 0;
+        views[1].Priority = 1;
+    }
+    public void CloseSettings(){
+        views[0].Priority = 1;
+        views[1].Priority = 0;
+        if (nameField.text != null){
+            Multiplayer.SetUsername(nameField.text);
         }
     }
 }

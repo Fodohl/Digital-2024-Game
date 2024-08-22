@@ -15,9 +15,11 @@ public class GunDelayRotate : MonoBehaviour
     void Update()
     {
         if (avatar.IsMe){
-            float x = Input.GetAxis("Mouse X");
-            float y = Input.GetAxis("Mouse Y");
-            gunHolder.transform.localRotation = Quaternion.Lerp(gunHolder.transform.localRotation, Quaternion.Euler(new Vector3(originalRotation.eulerAngles.x + y * 5, originalRotation.eulerAngles.y + x * 5, originalRotation.eulerAngles.z)), 0.05f);
+            if (GameManager.Instance.gameState == GameManager.GameState.Playing || GameManager.Instance.gameState == GameManager.GameState.ScoreBoard){
+                float x = Input.GetAxis("Mouse X");
+                float y = Input.GetAxis("Mouse Y");
+                gunHolder.transform.localRotation = Quaternion.Lerp(gunHolder.transform.localRotation, Quaternion.Euler(new Vector3(originalRotation.eulerAngles.x + y * 5, originalRotation.eulerAngles.y + x * 5, originalRotation.eulerAngles.z)), 0.05f);
+            }
         }
     }
 }

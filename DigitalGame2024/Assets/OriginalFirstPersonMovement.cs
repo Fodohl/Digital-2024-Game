@@ -114,19 +114,20 @@ public class OriginalFirstPersonMovement : CommunicationBridge
     }
     //manages the player input and sets the variale/runs a method
     private void PlayerInput(){
-        xInput = Input.GetAxisRaw("Horizontal");
-        yInput = Input.GetAxisRaw("Vertical");
-        xMouseInput = Input.GetAxis("Mouse X");
-        yMouseInput = Input.GetAxis("Mouse Y");
-        if (!isSwimming){
-            if (Input.GetKeyDown(jumpKey)){Jump();}
-            if (Input.GetKeyDown(crouchKey)){StartSlide();}
-            if (Input.GetKeyUp(crouchKey)){EndSlide();}
-        } else {
-            if (Input.GetKey(jumpKey)){SwimUp();}
-            if (Input.GetKey(crouchKey)){SwimDown();}
+        if (GameManager.Instance.gameState == GameManager.GameState.Playing || GameManager.Instance.gameState == GameManager.GameState.ScoreBoard){
+            xInput = Input.GetAxisRaw("Horizontal");
+            yInput = Input.GetAxisRaw("Vertical");
+            xMouseInput = Input.GetAxis("Mouse X");
+            yMouseInput = Input.GetAxis("Mouse Y");
+            if (!isSwimming){
+                if (Input.GetKeyDown(jumpKey)){Jump();}
+                if (Input.GetKeyDown(crouchKey)){StartSlide();}
+                if (Input.GetKeyUp(crouchKey)){EndSlide();}
+            } else {
+                if (Input.GetKey(jumpKey)){SwimUp();}
+                if (Input.GetKey(crouchKey)){SwimDown();}
+            }
         }
-
     }
 
     //handles movement on slope
