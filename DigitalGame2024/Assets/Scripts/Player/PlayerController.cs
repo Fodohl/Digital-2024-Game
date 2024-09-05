@@ -7,8 +7,9 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     public float lookSpeed = 2f;
     public Camera playerCamera;
-    private float y;
 
+    private float yaw;
+    private float pitch;
     private Rigidbody rb;
 
     private void Awake()
@@ -16,6 +17,9 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        yaw = transform.eulerAngles.y;
+        pitch = playerCamera.transform.localEulerAngles.x;
     }
 
     private void Update()
@@ -30,8 +34,8 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        float moveVertical = -Input.GetAxis("Horizontal");
-        float moveHorizontal = Input.GetAxis("Vertical");
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
         movement = transform.TransformDirection(movement);
@@ -44,14 +48,11 @@ public class PlayerController : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
         float mouseY = Input.GetAxis("Mouse Y") * lookSpeed;
 
-        Vector3 rotation = playerCamera.transform.localEulerAngles;
-        y += mouseX * Time.deltaTime;
-        rotation.x -= mouseY * Time.deltaTime;
-        rotation.x = Mathf.Clamp(rotation.x, -90f, 90f);
+        yaw += mouseX;
+        pitch -= mouseY;
+        pitch = Mathf.Clamp(pitch, -90f, 90f);
 
-        playerCamera.transform.localEulerAngles = rotation;
-
-        transform.rotation = Quaternion.Euler(0, y, 0);
+        playerCamera.transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+        transform.rotation = Quaternion.Euler(0f, yaw, 0f);
     }
 }
-
