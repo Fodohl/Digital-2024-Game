@@ -77,11 +77,11 @@ GameObject:
   - component: {fileID: 2136827110711633197}
   m_Layer: 3
   m_Name: RenderInFront
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4009184156007551870
 Transform:
   m_ObjectHideFlags: 0
@@ -249,7 +249,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2356978149792135673
 Transform:
   m_ObjectHideFlags: 0
@@ -832,15 +832,18 @@ MonoBehaviour:
   groundCheckRange: 0.3
   notPlayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 119
   LookSens: 3
   speed: 20
   jumpHeight: 10
   jumpKey: 32
   crouchKey: 306
   isGrounded: 0
+  canJump: 0
   isSliding: 0
   slopeCounter: 2
+  isSwimming: 0
+  waterHeight: 4.5
   moveDirection: {x: 0, y: 0, z: 0}
 --- !u!1 &2574833220682708474
 GameObject:

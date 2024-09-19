@@ -1750,7 +1750,7 @@ MonoBehaviour:
   teamSpawns:
   - {x: 100, y: 15, z: 550}
   - {x: 1370, y: 15, z: 276}
-  devSpawning: 1
+  devSpawning: 0
 --- !u!114 &175181118
 MonoBehaviour:
   m_ObjectHideFlags: 0
