@@ -90,13 +90,13 @@ public class OriginalFirstPersonMovement : CommunicationBridge
             EndSlide(); // End slide if in water
             isSwimming = true; // Set swimming state
             rb.useGravity = false; // Disable gravity while swimming
-            rb.drag = 0.5f; // Apply drag in water
+            rb.linearDamping = 0.5f; // Apply drag in water
         }
         else
         {
             isSwimming = false; // Reset swimming state
             rb.useGravity = true; // Re-enable gravity
-            rb.drag = 0f; // Reset drag
+            rb.linearDamping = 0f; // Reset drag
         }
 
         // Handle movement and look based on player state
@@ -206,11 +206,11 @@ public class OriginalFirstPersonMovement : CommunicationBridge
         {
             if (xInput != 0 || yInput != 0)
             {
-                rb.velocity = Vector3.Lerp(rb.velocity, new Vector3(moveDirection.x, moveDirection.y > 0 ? moveDirection.y * slopeCounter : 0, moveDirection.z), 0.05f);
+                rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, new Vector3(moveDirection.x, moveDirection.y > 0 ? moveDirection.y * slopeCounter : 0, moveDirection.z), 0.05f);
             }
             else
             {
-                rb.velocity = Vector3.Lerp(rb.velocity, new Vector3(0, rb.velocity.y, 0), 0.5f); // Slow down when not moving
+                rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, new Vector3(0, rb.linearVelocity.y, 0), 0.5f); // Slow down when not moving
             }
         }
         else if (isSliding && isGrounded)
@@ -221,7 +221,7 @@ public class OriginalFirstPersonMovement : CommunicationBridge
         {
             if (xInput != 0 || yInput != 0)
             {
-                rb.velocity = Vector3.Lerp(rb.velocity, new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z), 0.01f);
+                rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, new Vector3(moveDirection.x, rb.linearVelocity.y, moveDirection.z), 0.01f);
             }
         }
     }
@@ -234,7 +234,7 @@ public class OriginalFirstPersonMovement : CommunicationBridge
         // Adjust velocity based on input while swimming
         if (xInput != 0 || yInput != 0)
         {
-            rb.velocity = Vector3.Lerp(rb.velocity, new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z), 0.01f);
+            rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, new Vector3(moveDirection.x, rb.linearVelocity.y, moveDirection.z), 0.01f);
         }
     }
 
@@ -267,7 +267,7 @@ public class OriginalFirstPersonMovement : CommunicationBridge
         transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(transform.localScale.x, 0.4f, transform.localScale.z), 0.5f); // Adjust scale for sliding
         if (isGrounded)
         {
-            rb.AddForce(rb.velocity.normalized * rb.velocity.magnitude / 2f, ForceMode.Impulse); // Apply force to start sliding
+            rb.AddForce(rb.linearVelocity.normalized * rb.linearVelocity.magnitude / 2f, ForceMode.Impulse); // Apply force to start sliding
         }
     }
 
@@ -292,7 +292,7 @@ public class OriginalFirstPersonMovement : CommunicationBridge
         var cams = FindObjectsOfType<Camera>();
         foreach (var x in cams)
         {
-            x.fieldOfView = Mathf.Lerp(cam.fieldOfView, 90 + (rb.velocity.magnitude / 2), 0.1f);
+            x.fieldOfView = Mathf.Lerp(cam.fieldOfView, 90 + (rb.linearVelocity.magnitude / 2), 0.1f);
         }
     }
 
@@ -319,7 +319,7 @@ public class OriginalFirstPersonMovement : CommunicationBridge
                     StartCoroutine(CoyoteTime()); // Start coyote time for jump
                 }
             }
-            lastSpeed = rb.velocity.y; // Store last vertical speed
+            lastSpeed = rb.linearVelocity.y; // Store last vertical speed
         }
         else
         {
